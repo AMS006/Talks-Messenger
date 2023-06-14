@@ -14,7 +14,7 @@ const InputBox = () => {
         const data = {
             text,
             image: '',
-            conversationId: params.chatId!
+            conversationId: params.chatId || ""
         }
         setText('')
         await axios.post('/api/message', data)
@@ -28,7 +28,7 @@ const InputBox = () => {
         const data = {
             text: '',
             image: result.info.public_id,
-            conversationId: params.chatId!
+            conversationId: params.chatId || ""
         }
 
         await axios.post('/api/message', data)
