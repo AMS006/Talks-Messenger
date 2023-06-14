@@ -62,7 +62,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
     router.push(`/chats/${conversation.id}`)
   }
   return (
-    <div className={`relative flex gap-3 items-center border-b border-b-light1 py-3 px-2 hover:bg-b-light1 hover:bg-opacity-10 cursor-pointer ${params.chatId && params.chatId === conversation.id ? 'md:bg-b-light1 md:bg-opacity-20' : ''}`} onClick={() => handleClick()}>
+    <div className={`relative flex gap-3 items-center border-b border-b-light1 py-3 px-2 hover:bg-b-light1 hover:bg-opacity-10 cursor-pointer ${params && params.chatId && params.chatId === conversation.id ? 'md:bg-b-light1 md:bg-opacity-20' : ''}`} onClick={() => handleClick()}>
       {otherUser && !conversation.isGroup && <>
         {otherUser.image ? <Image src={otherUser?.image} height={38} width={38} className='rounded-full w-[38px] h-[38px]' alt={conversation.name || 'conversation'} /> :
           otherUser.name && <Avatar name={otherUser.name} size='38' round style={{ fontSize: '15px' }} />}

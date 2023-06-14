@@ -113,7 +113,7 @@ const Users = () => {
       }
       if (!isFound) {
         dispatch(deleteConversation(conversation))
-        if (params.chatId === conversation.id)
+        if (params && params.chatId === conversation.id)
           router.push('/chats')
       }
     }
