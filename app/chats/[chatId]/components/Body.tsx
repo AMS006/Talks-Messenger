@@ -28,6 +28,7 @@ const Body = () => {
     if (params.chatId)
       fetchMessages()
   }, [params.chatId])
+  
   useEffect(() => {
     const messageHandler = (message: MessageType) => {
       setMessages((current) => {

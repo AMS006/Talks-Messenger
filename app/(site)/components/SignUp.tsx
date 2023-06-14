@@ -21,7 +21,7 @@ function SignUp({ setActiveRoute }: signInProps) {
         if (session?.status === 'authenticated') {
             router.push('/chats')
         }
-    }, [session.status])
+    }, [session.status,router])
     const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
         defaultValues: {
             name: '',

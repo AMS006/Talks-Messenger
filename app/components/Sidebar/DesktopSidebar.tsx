@@ -35,7 +35,7 @@ const DesktopSidebar = ({ newConversations, currUser }: { newConversations: Conv
         if (newConversations && newConversations.length > conversations.length) {
             dispatch(setAllConversations(newConversations))
         }
-    }, [currUser, newConversations])
+    }, [currUser, newConversations,dispatch])
 
     useEffect(() => {
         if (!localStorage.mode) {
@@ -44,7 +44,7 @@ const DesktopSidebar = ({ newConversations, currUser }: { newConversations: Conv
         } else {
             dispatch(setUserMode(localStorage.getItem("mode") || ""))
         }
-    }, [])
+    }, [dispatch])
 
     const sideBarItems = [
         {

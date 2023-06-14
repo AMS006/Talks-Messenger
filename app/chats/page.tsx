@@ -6,9 +6,10 @@ import { useAppSelector } from '../redux/hooks'
 
 
 const page = () => {
-  const { user} = useAppSelector((state) => state.user)
-  useEffect(() => {
 
+  const { user} = useAppSelector((state) => state.user)
+  
+  useEffect(() => {
     async function fetchConversation() {
       await axios.get('/api/conversation').then((data) => {
       })

@@ -19,6 +19,7 @@ export default function Home() {
   const [code, setCode] = useState("")
   const [email, setEmail] = useState("")
   const { mode } = useAppSelector((state) => state.user)
+  
   const generateCode = () => {
     let newCode = String(Math.floor(100000 + Math.random() * 900000))
     setCode(newCode)

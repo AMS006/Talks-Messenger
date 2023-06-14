@@ -32,6 +32,7 @@ const BottomBarMobile = () => {
     dispatch(setUserMode(val))
     localStorage.setItem("mode", val)
   }
+  const dispatch = useAppDispatch()
   useEffect(() => {
     if (!localStorage.mode) {
       localStorage.setItem("mode", "light")
@@ -39,9 +40,8 @@ const BottomBarMobile = () => {
     } else {
       dispatch(setUserMode(localStorage.getItem("mode") || ""))
     }
-  }, [])
+  }, [dispatch])
   const params = useParams()
-  const dispatch = useAppDispatch()
   const { user, myProfileBar } = useAppSelector((state) => state.user)
   return (
     <>
