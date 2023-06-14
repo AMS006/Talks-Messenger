@@ -97,7 +97,7 @@ function SignIn({ setActiveRoute }: signInProps) {
                     <span>Continue with Google</span>
                 </button>
                 <div className='text-center w-full pt-2'>
-                    <div className={` text-sm ${mode === 'light' ? 'text-black' : 'text-white'}`}>Don't Have Account?&nbsp;
+                    <div className={`text-sm ${mode === 'light' ? 'text-black' : 'text-white'}`}>Don't Have Account?&nbsp;
                         <button
                             className={`font-semibold text-[#4b5cff] hover:underline ${loading ? 'cursor-default opacity-50' : ''}`}
                             onClick={() => setActiveRoute('signUp')}

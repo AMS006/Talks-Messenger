@@ -19,7 +19,7 @@ export default function Home() {
   const [code, setCode] = useState("")
   const [email, setEmail] = useState("")
   const { mode } = useAppSelector((state) => state.user)
-  
+
   const generateCode = () => {
     let newCode = String(Math.floor(100000 + Math.random() * 900000))
     setCode(newCode)
@@ -36,7 +36,7 @@ export default function Home() {
     if (session?.status === 'authenticated') {
       router.push('/chats')
     }
-  }, [session.status, session.data])
+  }, [session.status, session.data,router])
   return (
     <>
       <div className={`flex min-h-full flex-col  justify-center items-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-2 text-black' : 'bg-dark-2 text-white'}`}>
