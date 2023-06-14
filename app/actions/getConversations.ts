@@ -25,6 +25,8 @@ const getConversations = async () => {
                 }
             }
         })
+        if(!conversations)
+            return null
         return conversations
     } catch (error) {
         throw new Error("Invalid Request")
