@@ -19,16 +19,17 @@ const Body = () => {
   useEffect(() => {
     async function fetchMessages() {
       setLoading(true);
-      await axios.post(`/api/conversation/${params.chatId}/seen`).then((data) => {
-      })
-      await axios.get(`/api/message/${params.chatId}`).then((data) => {
-        setMessages(data.data.messages)
-      }).finally(() => setLoading(false))
+      if(params && params.chatId){
+        await axios.post(`/api/conversation/${params.chatId}/seen`)
+        await axios.get(`/api/message/${params.chatId}`).then((data) => {
+          setMessages(data.data.messages)
+        }).finally(() => setLoading(false))
+      }
     }
-    if (params.chatId)
+    if (params && params.chatId)
       fetchMessages()
   }, [params.chatId])
-  
+
   useEffect(() => {
     const messageHandler = (message: MessageType) => {
       setMessages((current) => {
