@@ -28,7 +28,7 @@ const Body = () => {
     }
     if (params && params.chatId)
       fetchMessages()
-  }, [params.chatId])
+  }, [params])
 
   useEffect(() => {
     const messageHandler = (message: MessageType) => {
