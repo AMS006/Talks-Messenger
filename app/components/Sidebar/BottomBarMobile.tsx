@@ -60,7 +60,7 @@ const BottomBarMobile = () => {
           </div>
           {sideBarItems.map((item) => (
             <Link
-              className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 p-1 ${item.active ? 'bg-opacity-20 bg-gray-300' : ''}`}
+              className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 p-1 ${item.active ? 'bg-opacity-30 bg-b-light1' : ''}`}
               href={`${item.path}`}
               title={item.name}
               key={item.name}

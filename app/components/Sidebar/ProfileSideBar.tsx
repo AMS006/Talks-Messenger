@@ -88,7 +88,7 @@ const ProfileSideBar: React.FC<data> = ({ name, email, image }) => {
     }, [currConversation, conversations])
 
     return (
-        <div className={`absolute right-0 z-10 h-full md:w-80 w-full md:opacity-90 transition-all ease-in-out duration-300 ${mode && mode === "light" ? 'bg-light-2' : 'bg-dark-2 text-white'} ${profileBar ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className={`absolute right-0 z-30 h-full md:w-80 w-full md:opacity-90 transition-all ease-in-out duration-300 ${mode && mode === "light" ? 'bg-light-2' : 'bg-dark-2 text-white'} ${profileBar ? 'translate-x-0' : 'translate-x-full'}`}>
             {currConversation && !currConversation.isGroup && <>
                 <div className={`flex items-center justify-between gap-4 px-4 h-16 transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
                     <h2 className='font-semibold text-lg'>Profile</h2>

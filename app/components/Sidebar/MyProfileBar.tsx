@@ -61,7 +61,7 @@ function MyProfileBar() {
         })
     }
     return (
-        <div className={`absolute top-0 md:left-16 left-0 md:w-80 w-full h-full z-20 transition-all duration-300 ease-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-2 text-white'} ${myProfileBar ? 'translate-x-0 border-r border-light-1' : '-translate-x-full'}`}>
+        <div className={`absolute top-0 md:left-16 left-0 md:w-80 w-full h-full z-30 transition-all duration-300 ease-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-2 text-white'} ${myProfileBar ? 'translate-x-0 border-r border-light-1' : '-translate-x-full'}`}>
             <div className={`flex items-center gap-4 px-2 h-16 ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-1 text-white'}`}>
                 <button className='hover:bg-b-light1 hover:bg-opacity-30 p-2 rounded-full' onClick={() => dispatch(setMyProfileBar(false))}>
                     <BiArrowBack size={24} />

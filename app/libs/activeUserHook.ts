@@ -20,7 +20,6 @@ const useActiveChannel = () =>{
       
             members.each((member: Record<string, any>) => initialMembers.push(member.id));
             dispatch(setActiveUser(initialMembers))
-            console.log(initialMembers)
           });
       
           channel.bind("pusher:member_added", (member: Record<string, any>) => {
