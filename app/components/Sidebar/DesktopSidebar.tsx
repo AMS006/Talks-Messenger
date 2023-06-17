@@ -59,7 +59,7 @@ const DesktopSidebar = ({currUser }: { currUser: User }) => {
             {currUser && <div className='hidden md:block'>
                 <MyProfileBar />
             </div>}
-            <div className={`hidden md:w-16 md:flex fixed left-0 z-20 flex-col py-2 transition-colors duration-300 ease-in-out border-r  shadow-lg h-full ${mode && mode === 'light' ? 'bg-light-1 border-b-light1 text-text-light-1' : 'bg-dark-1 text-white'}`}>
+            <div className={`hidden md:w-16 md:flex fixed left-0 z-40 flex-col py-2 transition-colors duration-300 ease-in-out border-r  shadow-lg h-full ${mode && mode === 'light' ? 'bg-light-1 border-b-light1 text-text-light-1' : 'bg-dark-1 text-white'}`}>
                 <div className='flex flex-col items-center'>
                     <Image src={logo} alt="logo" width={48} height={48} title='Talks Messanger' />
                     <h6 className='text-sm font-bold'>Talks</h6>
