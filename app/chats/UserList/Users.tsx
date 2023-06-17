@@ -11,21 +11,36 @@ import { User } from '@prisma/client'
 import { ConversationType } from '@/app/types'
 import { pusherClient } from '@/app/libs/pusher'
 import { find } from 'lodash'
-import { addConversations, deleteConversation, updateConversation } from '@/app/redux/conversation/slice'
+import { addConversations, deleteConversation, setAllConversations, updateConversation } from '@/app/redux/conversation/slice'
 import { toast } from 'react-hot-toast'
+import axios from 'axios'
+import Loader from '@/app/components/Loader'
 
 const Users = () => {
-  // Getting data from redux store
   const { conversations } = useAppSelector((state) => state.conversation)
   const { user, mode } = useAppSelector((state) => state.user)
 
+  const dispatch = useAppDispatch()
+
   const [groupModalOpen, setGroupModalOpen] = useState(false)
-  const [allConversations, setAllConversations] = useState<ConversationType[]>([])
+  const [currConversations, setCurrConversations] = useState<ConversationType[]>([])
   const [sortedConversations, setSortedConversations] = useState<ConversationType[]>([])
   const [allUsers, setAllUsers] = useState<User[]>()
+  const [loading,setLoading] = useState<boolean>(false)
+
+  useEffect(() =>{
+    async function fetchConversation(){
+      setLoading(true);
+      const response = await axios.get('/api/conversation');
+      if(response.data){
+        dispatch(setAllConversations(response.data.conversations))
+        setLoading(false);
+      }
+    }
+    fetchConversation()
+  },[dispatch])
 
   const params = useParams()
-  const dispatch = useAppDispatch()
   const router = useRouter()
 
   // Default values for group chat modal
@@ -37,7 +52,7 @@ const Users = () => {
   // Getting all users from the list of conversation
   const getAllUsers = () => {
     let allFinalUsers: User[] = []
-    allConversations.map((conversation) => {
+    currConversations.map((conversation) => {
       if (!conversation.isGroup && user) {
         if (!conversation.isGroup && user) {
           const userData = conversation.users.filter((u: any) => u.id !== user?.id);
@@ -51,7 +66,7 @@ const Users = () => {
   // SettingUp Initial Conversations
   useEffect(() => {
     if (conversations && conversations.length > 0) {
-      setAllConversations(conversations)
+      setCurrConversations(conversations)
     }
   }, [conversations])
 
@@ -63,7 +78,7 @@ const Users = () => {
     function handleNewConversation(conversation: ConversationType) {
       if (conversation) {
         dispatch(addConversations(conversation))
-        setAllConversations((current) => {
+        setCurrConversations((current) => {
           if (find(current, { id: conversation.id }))
             return current
           return [conversation, ...current]
@@ -73,8 +88,8 @@ const Users = () => {
     // Handle Realtime delete conversation
     function handleDeleteConversation(conversation: ConversationType) {
       if (conversation) {
-        let otherConversations = allConversations.filter((c) => c.id !== conversation.id)
-        setAllConversations(otherConversations)
+        let otherConversations = currConversations.filter((c) => c.id !== conversation.id)
+        setCurrConversations(otherConversations)
         dispatch(deleteConversation(conversation))
         router.push('/chats')
         toast.error("Conversation Deleted")
@@ -83,7 +98,7 @@ const Users = () => {
     // Handle Realtime update in conversation List
     function handleUpdateConversation(conversation: ConversationType) {
       if (conversation) {
-        setAllConversations((current) => current.map((conver) => {
+        setCurrConversations((current) => current.map((conver) => {
           if (conver.id === conversation.id) {
             return { ...conver, lastMessageAt: conversation.lastMessageAt, messages: conversation.messages }
           }
@@ -96,7 +111,7 @@ const Users = () => {
       console.log(conversation)
       if (conversation) {
         dispatch(updateConversation(conversation))
-        setAllConversations((current) => current.map((conver) => {
+        setCurrConversations((current) => current.map((conver) => {
           if (conver.id === conversation.id) {
             return conversation
           }
@@ -145,8 +160,8 @@ const Users = () => {
 
   // Getting the sorted list of conversation
   useEffect(() => {
-    if (allConversations.length > 0) {
-      let updatedSortedConverstion = [...allConversations]
+    if (currConversations.length > 0) {
+      let updatedSortedConverstion = [...currConversations]
       updatedSortedConverstion.sort((a: ConversationType, b: ConversationType) => {
         let time1 = new Date(a.lastMessageAt).getTime()
         let time2 = new Date(b.lastMessageAt).getTime()
@@ -157,7 +172,7 @@ const Users = () => {
 
       getAllUsers()
     }
-  }, [allConversations])
+  }, [currConversations])
 
   return (
     <>
@@ -175,7 +190,7 @@ const Users = () => {
         <div className={`flex flex-col overflow-auto scrollbar transition-colors duration-300 ease-in-out h-full md:pb-0 pb-16 ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2'}`}>
           {sortedConversations && sortedConversations.length > 0 ? sortedConversations.map((conversation, index) => (
             <UserBox conversation={conversation} key={index} />
-          )) :
+          )) : loading? <div className='flex justify-center items-center py-4'> <Loader height='28px' width='28px'/> </div>:
             <div className='flex justify-center items-center py-6'>
               <p className={`${mode === 'light' ? 'text-black' : 'text-gray-400'}`}>No Conversations Found</p>
             </div>}

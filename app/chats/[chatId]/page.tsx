@@ -3,10 +3,7 @@ import Header from './components/Header'
 import InputBox from './components/InputBox'
 import Body from './components/Body'
 
-interface IParams {
-  chatId: string
-}
-const page = ({ params }: { params: IParams }) => {
+const page = () => {
 
   return (
     <>

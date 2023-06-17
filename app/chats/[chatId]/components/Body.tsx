@@ -12,7 +12,7 @@ const Body = () => {
 
   const [messages, setMessages] = useState<MessageType[]>([])
   const [loading, setLoading] = useState<Boolean>(false);
-  const { mode } = useAppSelector((state) => state.user)
+  const { mode,user } = useAppSelector((state) => state.user)
 
   const params = useParams()
   const { currConversation } = useAppSelector((state) => state.conversation)
@@ -20,7 +20,6 @@ const Body = () => {
     async function fetchMessages() {
       setLoading(true);
       if(params && params.chatId){
-        await axios.post(`/api/conversation/${params.chatId}/seen`)
         await axios.get(`/api/message/${params.chatId}`).then((data) => {
           setMessages(data.data.messages)
         }).finally(() => setLoading(false))
@@ -28,7 +27,14 @@ const Body = () => {
     }
     if (params && params.chatId)
       fetchMessages()
-  }, [params])
+  }, [])
+  useEffect(() =>{
+    if(messages && messages.length > 0 && params && user){
+      let idx = messages[messages.length -1].seenUserIds.find((id) => id === user.id)
+      if(!idx)
+        axios.post(`/api/conversation/${params.chatId}/seen`)
+    }
+  },[messages])
 
   useEffect(() => {
     const messageHandler = (message: MessageType) => {

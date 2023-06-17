@@ -7,7 +7,7 @@ export interface Conversations {
     error: string
 }
 const initialState: Conversations = {
-    conversations: [],
+    conversations: [] ,
     currConversation: undefined,
     loading: false,
     error: ""
@@ -43,6 +43,7 @@ const updateHandler = (state: Conversations, conversation: ConversationType) => 
 const conversationSlice = createSlice({
     name: "conversation",
     initialState,
+    
     reducers: {
         requestConversation: (state) => {
             state.loading = true

@@ -56,7 +56,7 @@ const Users = () => {
         } else if (allUser) {
             setSearchUsers(allUser)
         }
-    }, [conversations])
+    }, [conversations,getOtherUsers,searchUsers])
     return (
         <div className={`flex flex-col items-center transition-colors duration-300 ease-in-out w-full h-full p-4 overflow-y-auto ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2 text-white'}`}>
             <div className='flex justify-center shadow-lg rounded-full border overflow-hidden lg:w-2/5 md:w-3/5 sm:w-2/3 w-full'>

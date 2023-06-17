@@ -12,30 +12,24 @@ import logo from '../../../public/logo.png'
 import MyProfileBar from './MyProfileBar'
 import Avatar from 'react-avatar'
 import { User } from '@prisma/client'
-import { ConversationType } from '@/app/types'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { setAllConversations } from '@/app/redux/conversation/slice'
 import { setCurrUser, setMyProfileBar, setUserMode } from '@/app/redux/user/slice'
 
-const DesktopSidebar = ({ newConversations, currUser }: { newConversations: ConversationType[], currUser: User }) => {
+const DesktopSidebar = ({currUser }: { currUser: User }) => {
     const path = usePathname()
     const dispatch = useAppDispatch()
 
     const { user, myProfileBar, mode } = useAppSelector((state) => state.user)
-    const { conversations } = useAppSelector((state) => state.conversation)
     const toggleMode = (val: string) => {
         dispatch(setUserMode(val))
         localStorage.setItem("mode", val)
     }
-
     useEffect(() => {
         if (currUser) {
             dispatch(setCurrUser(currUser))
         }
-        if (newConversations && newConversations.length > conversations.length) {
-            dispatch(setAllConversations(newConversations))
-        }
-    }, [currUser, newConversations,dispatch])
+
+    }, [currUser,dispatch])
 
     useEffect(() => {
         if (!localStorage.mode) {
