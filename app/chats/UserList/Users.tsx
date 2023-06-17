@@ -1,19 +1,19 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { AiOutlineUsergroupAdd } from 'react-icons/ai'
-import UserBox from './UserBox'
+import { toast } from 'react-hot-toast'
 import { useParams, useRouter } from 'next/navigation'
-import logo from '../../../public/logo.png'
 import Image from 'next/image'
+import { find } from 'lodash'
+import { User } from '@prisma/client'
+import UserBox from './UserBox'
+import logo from '../../../public/logo.png'
+import { addConversations, deleteConversation, setAllConversations, updateConversation } from '@/app/redux/conversation/slice'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import GroupCreateModal from '@/app/components/Modals/GroupCreateModal'
-import { User } from '@prisma/client'
 import { ConversationType } from '@/app/types'
 import { pusherClient } from '@/app/libs/pusher'
-import { find } from 'lodash'
-import { addConversations, deleteConversation, setAllConversations, updateConversation } from '@/app/redux/conversation/slice'
-import { toast } from 'react-hot-toast'
-import axios from 'axios'
 import Loader from '@/app/components/Loader'
 
 const Users = () => {
@@ -40,6 +40,13 @@ const Users = () => {
     fetchConversation()
   },[dispatch])
 
+  // SettingUp Initial Conversations
+  useEffect(() => {
+    if (conversations && conversations.length > 0) {
+      setCurrConversations(conversations)
+    }
+  }, [conversations])
+
   const params = useParams()
   const router = useRouter()
 
@@ -54,22 +61,12 @@ const Users = () => {
     let allFinalUsers: User[] = []
     currConversations.map((conversation) => {
       if (!conversation.isGroup && user) {
-        if (!conversation.isGroup && user) {
-          const userData = conversation.users.filter((u: any) => u.id !== user?.id);
-          allFinalUsers.push(userData[0]);
-        }
+        const userData = conversation.users.filter((u: any) => u.id !== user?.id);
+        allFinalUsers.push(userData[0]);
       }
     })
     setAllUsers(allFinalUsers)
   }
-
-  // SettingUp Initial Conversations
-  useEffect(() => {
-    if (conversations && conversations.length > 0) {
-      setCurrConversations(conversations)
-    }
-  }, [conversations])
-
 
   // For Handling Pusher Requests
   useEffect(() => {
@@ -98,6 +95,7 @@ const Users = () => {
     // Handle Realtime update in conversation List
     function handleUpdateConversation(conversation: ConversationType) {
       if (conversation) {
+        console.log(conversation)
         setCurrConversations((current) => current.map((conver) => {
           if (conver.id === conversation.id) {
             return { ...conver, lastMessageAt: conversation.lastMessageAt, messages: conversation.messages }
@@ -158,7 +156,7 @@ const Users = () => {
     }
   }, [user])
 
-  // Getting the sorted list of conversation
+  // Getting the sorted list of conversation according to lastMessage
   useEffect(() => {
     if (currConversations.length > 0) {
       let updatedSortedConverstion = [...currConversations]

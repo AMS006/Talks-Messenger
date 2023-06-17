@@ -13,13 +13,23 @@ dayjs.extend(calendar)
 
 const UserBox = ({ conversation }: { conversation: ConversationType }) => {
 
-  const { user, mode } = useAppSelector((state) => state.user)
+  const { user, mode, activeUsers } = useAppSelector((state) => state.user)
   const [otherUser, setOtherUser] = useState<User>()
 
   const [time, setTime] = useState<string>()
   const [lastMessage, setLastMessage] = useState<string | null>('')
   const [lastMessageData, setLastMessageData] = useState<MessageType>();
   const [hasSeen, setHasSeen] = useState<boolean>();
+  const [isActive,setIsActive] = useState<boolean>(false)
+
+  useEffect(() =>{
+    setIsActive(false)
+    if(activeUsers && activeUsers.length>0 && otherUser){
+      let active = activeUsers.find((email) => email === otherUser?.email)
+      if(active)
+        setIsActive(true)
+    }
+  },[activeUsers,otherUser])
 
   useEffect(() => {
     setLastMessage('')
@@ -63,10 +73,11 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
   }
   return (
     <div className={`relative flex gap-3 items-center border-b border-b-light1 py-3 px-2 hover:bg-b-light1 hover:bg-opacity-10 cursor-pointer ${params && params.chatId && params.chatId === conversation.id ? 'md:bg-b-light1 md:bg-opacity-20' : ''}`} onClick={() => handleClick()}>
-      {otherUser && !conversation.isGroup && <>
+      {otherUser && !conversation.isGroup && <div className='relative'>
         {otherUser.image ? <Image src={otherUser?.image} height={38} width={38} className='rounded-full w-[38px] h-[38px]' alt={conversation.name || 'conversation'} /> :
           otherUser.name && <Avatar name={otherUser.name} size='38' round style={{ fontSize: '15px' }} />}
-      </>}
+          {isActive && <span className='h-2 w-2 bg-green-600 rounded-full absolute top-1 right-0 z-20' title='Active'/>}
+      </div>}
       {conversation.isGroup &&
         <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out  bg-opacity-40  p-1.5 ${mode && mode === 'light' ? 'text-text-light-1 bg-b-light1' : 'bg-light-1 text-white'}`}>
           <TiGroup size={28} />

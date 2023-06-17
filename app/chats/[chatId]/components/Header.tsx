@@ -15,11 +15,20 @@ import { setProfileBar } from '@/app/redux/user/slice'
 const Header = () => {
 
     const { conversations, currConversation } = useAppSelector((state) => state.conversation)
-    const { user, mode } = useAppSelector((state) => state.user)
-
-    const dispatch = useAppDispatch()
-
+    const { user, mode, activeUsers } = useAppSelector((state) => state.user)
+    const [isActive,setIsActive] = useState<boolean>(false)
     const [otherUser, setOtherUser] = useState<User>()
+    
+    const dispatch = useAppDispatch()
+    
+    useEffect(() =>{
+        setIsActive(false)
+        if(activeUsers && activeUsers.length>0 && otherUser){
+          let active = activeUsers.find((email) => email === otherUser?.email)
+          if(active)
+            setIsActive(true)
+        }
+      },[activeUsers,otherUser])
     const param = useParams()
 
     useEffect(() => {
@@ -54,7 +63,7 @@ const Header = () => {
                                 <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out bg-opacity-50 p-1.5 ${mode && mode === 'light' ? 'text-text-light-1 bg-b-light1' : 'bg-light-1 text-white'}`}>
                                     <TiGroup size={28} />
                                 </div>}
-                            {currConversation && !currConversation.isGroup && <h2 className='font-semibold'>{otherUser?.name}</h2>}
+                            {currConversation && !currConversation.isGroup && <div className='flex flex-col '><h2 className='font-semibold'>{otherUser?.name}</h2> {isActive?<span className='text-xs '>Active</span>:<span className='text-xs '>Not Active</span>} </div>}
                             {currConversation && currConversation.isGroup && <h2 className='font-semibold'>{currConversation.name}</h2>}
 
                         </div>

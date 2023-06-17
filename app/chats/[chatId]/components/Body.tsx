@@ -29,9 +29,11 @@ const Body = () => {
       fetchMessages()
   }, [])
   useEffect(() =>{
+    console.log(messages)
     if(messages && messages.length > 0 && params && user){
       let idx = messages[messages.length -1].seenUserIds.find((id) => id === user.id)
-      if(!idx)
+      console.log(idx)
+      if(idx === undefined)
         axios.post(`/api/conversation/${params.chatId}/seen`)
     }
   },[messages])

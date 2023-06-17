@@ -30,6 +30,7 @@ const Users = () => {
     const handleSearch = async () => {
         if (searchData) {
             setLoading(true)
+            setSearchUsers([])
             await axios.post('/api/searchUser', { searchData }).then(async (users) => {
                 const allUser = users.data.users
                 const otherUsers = getOtherUsers()
@@ -56,7 +57,7 @@ const Users = () => {
         } else if (allUser) {
             setSearchUsers(allUser)
         }
-    }, [conversations,getOtherUsers,searchUsers])
+    }, [conversations])
     return (
         <div className={`flex flex-col items-center transition-colors duration-300 ease-in-out w-full h-full p-4 overflow-y-auto ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2 text-white'}`}>
             <div className='flex justify-center shadow-lg rounded-full border overflow-hidden lg:w-2/5 md:w-3/5 sm:w-2/3 w-full'>

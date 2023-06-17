@@ -30,7 +30,6 @@ const GroupCreateModal: React.FC<InputProps> = ({ isOpen, onClose, allUsers, def
 
         onClose()
         if (isUpdate) {
-
             await axios.post('/api/conversation', { ...data, isGroup: true, conversationId: currConversation?.id }).then(async () => {
                 if (currConversation && allUsers && allUsers.length > 0)
                     await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: currConversation?.id })
