@@ -51,7 +51,7 @@ const GroupCreateModal: React.FC<InputProps> = ({ isOpen, onClose, allUsers, def
         <Modal isOpen={isOpen} onClose={onClose}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <h1 className='font-bold'>Create a group chat</h1>
+                    <h1 className='font-bold text-xl border-b pb-2'>Create a group chat</h1>
                     <div className='py-3'>
                         <Input
                             id='name'

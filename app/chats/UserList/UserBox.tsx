@@ -9,6 +9,7 @@ import { TiGroup } from 'react-icons/ti'
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import { useAppSelector } from '@/app/redux/hooks'
+import { pusherClient } from '@/app/libs/pusher'
 dayjs.extend(calendar)
 
 const UserBox = ({ conversation }: { conversation: ConversationType }) => {
@@ -66,6 +67,18 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
         setHasSeen(true);
     }
   }, [lastMessageData])
+
+  // useEffect(()=>{
+  //   if(currConversation){
+  //     pusherClient.subscribe(currConversation.id)
+
+  //     pusherClient.bind('message:delete', () => setLastMessage(null))
+
+  //     return () =>{
+  //       pusherClient.unsubscribe(currConversation.id)
+  //     }
+  //   }
+  // },[currConversation])
   const router = useRouter()
   const params = useParams()
   const handleClick = () => {

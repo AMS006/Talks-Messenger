@@ -6,8 +6,6 @@ import { store } from './redux/store'
 import { Provider } from 'react-redux'
 import ActiveStatus from './components/ActiveStatus'
 
-
-
 export default function RootLayout({
   children,
 }: {

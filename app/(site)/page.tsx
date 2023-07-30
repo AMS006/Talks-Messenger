@@ -13,19 +13,26 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { MdDarkMode, MdLightMode } from "react-icons/md"
 import { setUserMode } from "../redux/user/slice"
 
-
 export default function Home() {
   const [activeRoute, setActiveRoute] = useState('signIn')
   const [code, setCode] = useState("")
   const [email, setEmail] = useState("")
   const { mode } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    if (!localStorage.mode) {
+        localStorage.setItem("mode", "light")
+        dispatch(setUserMode("light"))
+    } else {
+        dispatch(setUserMode(localStorage.getItem("mode") || ""))
+    }
+  }, [dispatch])
 
   const generateCode = () => {
     let newCode = String(Math.floor(100000 + Math.random() * 900000))
     setCode(newCode)
     return newCode;
   }
-  const dispatch = useAppDispatch()
   const toggleMode = (val: string) => {
     dispatch(setUserMode(val))
     localStorage.setItem("mode", val)

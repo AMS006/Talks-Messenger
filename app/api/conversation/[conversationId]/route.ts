@@ -12,7 +12,7 @@ export async function DELETE(req: Request, { params }: { params: Iparams }) {
                 users: true
             }
         })
-        const messages = await prisma.message.deleteMany({
+        await prisma.message.deleteMany({
             where: { conversationId: params.conversationId }
         })
         conversation.users.map((user) => {

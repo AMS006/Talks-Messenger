@@ -48,7 +48,7 @@ const BottomBarMobile = () => {
       <div className='block md:hidden'>
         <MyProfileBar />
       </div>
-      <div className={`md:hidden fixed flex bottom-0 text-text-light-1 h-16  z-40 w-full transition-colors duration-300 ease-in-out ${mode === 'light' ? 'bg-light-1' : 'bg-dark-1 text-white'} ${params && params?.chatId ? 'hidden' : ''}`}>
+      <div className={`md:hidden fixed flex bottom-0 text-text-light-1 h-16 z-40 w-full transition-colors duration-300 ease-in-out ${mode === 'light' ? 'bg-light-1' : 'bg-dark-1 text-white'} ${params && params?.chatId ? 'hidden' : ''}`}>
         <div className='flex gap-6 items-center  justify-around w-full'>
           <div className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 pt-1 px-1`}>
             {mode === "light" ? <button onClick={() => toggleMode("dark")}>

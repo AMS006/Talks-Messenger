@@ -25,11 +25,11 @@ const DesktopSidebar = ({currUser }: { currUser: User }) => {
         localStorage.setItem("mode", val)
     }
     useEffect(() => {
-        if (currUser) {
+        if (currUser && !user) {
             dispatch(setCurrUser(currUser))
         }
 
-    }, [currUser,dispatch])
+    }, [dispatch,currUser])
 
     useEffect(() => {
         if (!localStorage.mode) {

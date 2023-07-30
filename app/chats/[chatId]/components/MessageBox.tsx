@@ -50,7 +50,7 @@ const MessageBox = ({ message }: { message: MessageType }) => {
   const { mode } = useAppSelector((state) => state.user)
   return (
     <>
-      {message && message.messageType === 'text' && <div className={`flex ${message.senderId === user?.id ? 'justify-end' : 'justify-start'} `}>
+      {message && message.messageType === 'text' && <div className={`flex my-2 ${message.senderId === user?.id ? 'justify-end' : 'justify-start'} `}>
         {user &&
           <div className={`transition-colors duration-300 ease-in-out ${message.senderId === user?.id ? 'bg-[#6d94c6]' : `${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2 text-white'}`} text-black relative px-1.5 py-1.5 rounded  max-w-[85%]`}>
             {currConversation?.isGroup && <h5 className='-mt-0.5 underline -ml-0.5 text-sm font-medium truncate'>{message.sender.id === user.id ? 'Me' : message.sender.name}</h5>}
@@ -60,7 +60,7 @@ const MessageBox = ({ message }: { message: MessageType }) => {
           </div>}
       </div>}
       {user && message && message.messageType === 'user' &&
-        <div className='flex justify-center'>
+        <div className='flex justify-center my-2'>
           <p className='text-xs
          bg-light-2 px-2 py-1 font-semibold rounded'>{message.senderId === user.id ? `You ${message.text}` : `${message.sender.name} ${message.text}`}</p>
         </div>

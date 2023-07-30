@@ -7,7 +7,7 @@ export interface Conversations {
     error: string
 }
 const initialState: Conversations = {
-    conversations: [] ,
+    conversations: [],
     currConversation: undefined,
     loading: false,
     error: ""
@@ -79,10 +79,15 @@ const conversationSlice = createSlice({
         addMessages: (state, action: PayloadAction<MessageType>) => {
             state.currConversation?.messages.push(action.payload)
             state.loading = false
+        },
+        clearMessages:(state) =>{
+            state.currConversation?.messages.map(() =>{
+                state.currConversation?.messages.pop()
+            })
         }
     }
 
 })
-export const { setAllConversations, addMessages, addConversations, deleteConversation, setCurrConversation, updateConversation } = conversationSlice.actions
+export const { setAllConversations, addMessages, clearMessages, addConversations, deleteConversation, setCurrConversation, updateConversation } = conversationSlice.actions
 
 export default conversationSlice.reducer

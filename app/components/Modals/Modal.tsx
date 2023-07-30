@@ -79,36 +79,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                   sm:p-6
                   `}
               >
-                <div
-                  className="
-                    absolute 
-                    right-0 
-                    top-0 
-                    hidden 
-                    pr-4 
-                    pt-4 
-                    sm:block
-                    z-10
-                  "
-                >
-                  <button
-                    type="button"
-                    className="
-                      rounded-md 
-                      bg-light-1
-                      text-gray-100 
-                      hover:text-black 
-                      focus:outline-none 
-                      focus:ring-2 
-                      focus:ring-indigo-500 
-                      focus:ring-offset-2
-                    "
-                    onClick={onClose}
-                  >
-                    <span className="sr-only">Close</span>
-                    <IoClose className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
                 {children}
               </Dialog.Panel>
             </Transition.Child>

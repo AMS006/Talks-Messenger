@@ -44,7 +44,7 @@ function SignUp({ setActiveRoute }: signInProps) {
         }).finally(() => setIsLoading(false))
     }
     return (
-        <div className={`flex flex-col items-center bg-light-1 rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
+        <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
             <h1 className='font-semibold text-2xl'>Sign Up</h1>
             <div>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>

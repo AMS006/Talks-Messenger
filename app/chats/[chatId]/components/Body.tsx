@@ -2,7 +2,7 @@
 import { pusherClient } from '@/app/libs/pusher'
 import MessageBox from './MessageBox'
 import { useAppSelector } from '@/app/redux/hooks'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MessageType } from '@/app/types'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
@@ -14,8 +14,10 @@ const Body = () => {
   const [loading, setLoading] = useState<Boolean>(false);
   const { mode,user } = useAppSelector((state) => state.user)
 
+  const bottomRef = useRef<HTMLDivElement>(null);
   const params = useParams()
   const { currConversation } = useAppSelector((state) => state.conversation)
+
   useEffect(() => {
     async function fetchMessages() {
       setLoading(true);
@@ -33,14 +35,18 @@ const Body = () => {
       let idx = messages[messages.length -1].seenUserIds.find((id) => id === user.id)
       if(idx === undefined)
         axios.post(`/api/conversation/${params.chatId}/seen`)
-    }
+      bottomRef?.current?.scrollIntoView();
+      }
   },[messages])
 
   useEffect(() => {
+    bottomRef?.current?.scrollIntoView();
+
     const messageHandler = (message: MessageType) => {
       setMessages((current) => {
         return [...current, message]
       });
+      bottomRef?.current?.scrollIntoView()
     }
     if (currConversation) {
       pusherClient.subscribe(currConversation.id)
@@ -54,17 +60,22 @@ const Body = () => {
       }
     }
   }, [currConversation])
-  return (
-    <div className={`h-full overflow-auto transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
-      {!loading ? <div className='h-full flex gap-2 py-4 md:px-4 px-2 overflow-y-auto scrollbar flex-col'>
-        {messages && messages.map((message) => (
-          <MessageBox message={message} key={message.id} />
-        ))}
-      </div> :
-        <div className='h-full w-full flex justify-center items-center'>
+
+  if(loading){
+    return(
+      <div className={`h-full w-full flex justify-center items-center ${mode && mode === 'light'?'bg-light-1':'bg-dark-1'}`}>
           <Loader height='36px' width='36px' />
-        </div>
+      </div>
+    )
+  }
+  return (
+    <div className={`flex-1 overflow-y-auto py-2 px-2 scrollbar ${mode && mode === 'light'?'bg-light-1':'bg-dark-1'}`}>
+      {
+        messages.map((message,index) =>(
+          <MessageBox message={message} key={index} />
+        ))
       }
+      <div className='pt-24' ref={bottomRef}/>
     </div>
   )
 }
