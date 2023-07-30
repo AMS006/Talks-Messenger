@@ -10,8 +10,10 @@ export async function POST(req: Request) {
         if (!user)
             throw new Error("Invalid Request")
 
-        if (user.resetCode === body.code)
+        if (user.resetCode === body.code){
+            await prisma.user.update({where:{email:body.email}, data:{resetCode:""}})
             return NextResponse.json({ message: "Correct Code" })
+        }
 
         throw new Error("Incorrect Code")
     } catch (error) {

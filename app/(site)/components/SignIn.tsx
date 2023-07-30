@@ -74,7 +74,7 @@ function SignIn({ setActiveRoute }: signInProps) {
                     />
                     <button
                         type='submit'
-                        className={`w-full bg-transparent border border-white ${mode && mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
+                        className={`w-full select-none bg-transparent border border-white ${mode && mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
                         disabled={loading}
                     >
                         {!loading ? 'Login' : 'Signing...'}</button>
@@ -83,7 +83,7 @@ function SignIn({ setActiveRoute }: signInProps) {
                 <div className='text-center w-full pt-4'>
                     <button
                         onClick={() => setActiveRoute('forgotPassword')}
-                        className={`text-sm font-semibold hover:underline ${mode && mode === 'light' ? 'text-gray-600' : 'text-white'} ${loading ? 'cursor-default opacity-50' : ''}`}
+                        className={`text-sm select-none font-semibold hover:underline ${mode && mode === 'light' ? 'text-gray-600' : 'text-white'} ${loading ? 'cursor-default opacity-50' : ''}`}
                         disabled={loading}
                     >Forgot Password?
                     </button>
@@ -94,12 +94,12 @@ function SignIn({ setActiveRoute }: signInProps) {
                     disabled={loading}
                 >
                     <FcGoogle size={22} />
-                    <span>Continue with Google</span>
+                    <span className='select-none'>Continue with Google</span>
                 </button>
                 <div className='text-center w-full pt-2'>
                     <div className={`text-sm ${mode === 'light' ? 'text-black' : 'text-white'}`}>Don't Have Account?&nbsp;
                         <button
-                            className={`font-semibold text-[#4b5cff] hover:underline ${loading ? 'cursor-default opacity-50' : ''}`}
+                            className={`font-semibold select-none text-[#4b5cff] hover:underline ${loading ? 'cursor-default opacity-50' : ''}`}
                             onClick={() => setActiveRoute('signUp')}
                             disabled={loading}
                         >Sign Up</button>

@@ -27,13 +27,13 @@ const SearchUserBox = ({ user }: { user: User | undefined }) => {
     }
     return (
         <>
-            {user && <div className='flex gap-1 border border-b-light1 items-center  rounded px-2 py-2'>
+            {user && <div className='flex gap-1 select-none border border-b-light1 items-center  rounded px-2 py-2'>
                 <div>
                     {user && user.image ? <Image height={36} width={36} src={user.image} alt="" className='rounded-full p-1 hover:bg-opacity-40' /> :
                         user.name && <Avatar name={user.name} size='36' round style={{ fontSize: '12px' }} />}
                 </div>
                 <div className='flex gap-4 items-center w-full justify-between'>
-                    <h2>{user.name}</h2>
+                    <h2 className='select-none'>{user.name}</h2>
                     {!loading ? <button onClick={handleAddConversation} className='hover:bg-b-light1 hover:bg-opacity-30 p-1'>
                         <IoAdd size={28} />
                     </button> : <Loader height='24px' width='24px' />}

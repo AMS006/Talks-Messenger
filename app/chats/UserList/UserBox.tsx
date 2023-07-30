@@ -61,7 +61,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
     router.push(`/chats/${conversation.id}`)
   }
   return (
-    <div className={`relative flex gap-3 items-center border-b border-b-light1 py-3 px-2 hover:bg-b-light1 hover:bg-opacity-10 cursor-pointer ${params && params.chatId && params.chatId === conversation.id ? 'md:bg-b-light1 md:bg-opacity-20' : ''}`} onClick={() => handleClick()}>
+    <div className={`relative flex gap-3 items-center border-b border-b-light1 py-3 px-2 hover:bg-b-light1 hover:bg-opacity-10 select-none cursor-pointer ${params && params.chatId && params.chatId === conversation.id ? 'md:bg-b-light1 md:bg-opacity-20' : ''}`} onClick={() => handleClick()}>
       {otherUser && !conversation.isGroup && <div className='relative'>
         {otherUser.image ? <Image src={otherUser?.image} height={38} width={38} className='rounded-full w-[38px] h-[38px]' alt={conversation.name || 'conversation'} /> :
           otherUser.name && <Avatar name={otherUser.name} size='38' round style={{ fontSize: '15px' }} />}
@@ -74,12 +74,12 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
       {otherUser && <div className='md:w-5/6 sm:w-11/12 w-5/6'>
         <div className='flex justify-between items-center gap-10 w-full'>
           {!conversation.isGroup ? <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{otherUser.name}</h5> :
-            <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{conversation.name}</h5>}
+            <h5 className={`truncate transition-colors select-none duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{conversation.name}</h5>}
           {time && conversation.messages && conversation.messages.length > 0 && <div className='text-gray-400  text-xs font-sans flex items-center gap-2'>
-            <span title='Time'>{time}</span>
+            <span title='Time' className='select-none'>{time}</span>
           </div>}
         </div>
-        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in-out  truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500'>Started Conversation</p>}
+        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in- select-none truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500'>Started Conversation</p>}
       </div>}
 
     </div>

@@ -48,7 +48,7 @@ const Header = () => {
     return (
         <>
             {otherUser && <ProfileSideBar name={otherUser?.name} email={otherUser?.email} image={otherUser?.image} />}
-            {otherUser && <div className={`flex items-center transition-colors duration-300 ease-in-out w-full shadow-lg  md:p-4 h-16  px-2 ${mode && mode === 'light' ? 'bg-light-2 text-black' : 'bg-dark-2 text-white'}`}>
+            {otherUser && <div className={`flex items-center select-none transition-colors duration-300 ease-in-out w-full shadow-lg  md:p-4 h-16  px-2 ${mode && mode === 'light' ? 'bg-light-2 text-black' : 'bg-dark-2 text-white'}`}>
                 <div className='flex gap-2 items-center w-full'>
                     <div className='flex md:gap-3 gap-1 items-center w-full md:py-0 py-3'>
                         <div className='cursor-pointer'>
@@ -63,8 +63,8 @@ const Header = () => {
                                 <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out bg-opacity-50 p-1.5 ${mode && mode === 'light' ? 'text-text-light-1 bg-b-light1' : 'bg-light-1 text-white'}`}>
                                     <TiGroup size={28} />
                                 </div>}
-                            {currConversation && !currConversation.isGroup && <div className='flex flex-col '><h2 className='font-semibold'>{otherUser?.name}</h2> {isActive?<span className='text-xs '>Active</span>:<span className='text-xs '>Not Active</span>} </div>}
-                            {currConversation && currConversation.isGroup && <h2 className='font-semibold'>{currConversation.name}</h2>}
+                            {currConversation && !currConversation.isGroup && <div className='flex flex-col '><h2 className='font-semibold select-none'>{otherUser?.name}</h2> {isActive?<span className='text-xs '>Active</span>:<span className='text-xs '>Not Active</span>} </div>}
+                            {currConversation && currConversation.isGroup && <h2 className='font-semibold select-none'>{currConversation.name}</h2>}
 
                         </div>
                     </div>
