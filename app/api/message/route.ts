@@ -18,9 +18,6 @@ export async function POST(req: Request) {
                 messageType: body?.messageType,
                 sender: {
                     connect: { id: currUser?.id }
-                },
-                seenUsers: {
-                    connect: { id: currUser?.id }
                 }
             },
             include: {
@@ -37,11 +34,7 @@ export async function POST(req: Request) {
             },
             include: {
                 users: true,
-                messages: {
-                    include: {
-                        seenUsers: true
-                    }
-                }
+                messages: true
             }
         })
         await pusherServer.trigger(body.conversationId, 'message:new', message)

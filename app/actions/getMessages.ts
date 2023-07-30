@@ -9,7 +9,6 @@ const getMessages = async (conversationId: string) => {
             where: { conversationId: conversationId },
             include: {
                 sender: true,
-                seenUsers: true
             },
             orderBy: {
                 createdAt: "desc"
