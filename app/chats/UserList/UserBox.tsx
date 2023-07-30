@@ -2,14 +2,13 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { User } from '@prisma/client'
-import { ConversationType, MessageType } from '@/app/types'
+import { ConversationType} from '@/app/types'
 import Avatar from 'react-avatar'
 import { useParams, useRouter } from 'next/navigation'
 import { TiGroup } from 'react-icons/ti'
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import { useAppSelector } from '@/app/redux/hooks'
-import { pusherClient } from '@/app/libs/pusher'
 dayjs.extend(calendar)
 
 const UserBox = ({ conversation }: { conversation: ConversationType }) => {
@@ -19,8 +18,6 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
 
   const [time, setTime] = useState<string>()
   const [lastMessage, setLastMessage] = useState<string | null>('')
-  const [lastMessageData, setLastMessageData] = useState<MessageType>();
-  const [hasSeen, setHasSeen] = useState<boolean>();
   const [isActive,setIsActive] = useState<boolean>(false)
 
   useEffect(() =>{
@@ -36,7 +33,6 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
     setLastMessage('')
     if (conversation.messages && conversation.messages.length > 0) {
       if (conversation.messages) {
-        setLastMessageData(conversation.messages[0]);
         if (conversation.messages[0].image) {
           setLastMessage('Image')
         } else {
@@ -58,27 +54,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
       setTime(data)
     }
   }, [lastMessage])
-  useEffect(() => {
-    if (lastMessageData && user) {
-      let messages = lastMessageData.seenUserIds.filter((id) => id === user.id)
-      if (messages.length === 0)
-        setHasSeen(false);
-      else
-        setHasSeen(true);
-    }
-  }, [lastMessageData])
 
-  // useEffect(()=>{
-  //   if(currConversation){
-  //     pusherClient.subscribe(currConversation.id)
-
-  //     pusherClient.bind('message:delete', () => setLastMessage(null))
-
-  //     return () =>{
-  //       pusherClient.unsubscribe(currConversation.id)
-  //     }
-  //   }
-  // },[currConversation])
   const router = useRouter()
   const params = useParams()
   const handleClick = () => {
@@ -100,11 +76,10 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
           {!conversation.isGroup ? <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{otherUser.name}</h5> :
             <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{conversation.name}</h5>}
           {time && conversation.messages && conversation.messages.length > 0 && <div className='text-gray-400  text-xs font-sans flex items-center gap-2'>
-            {!hasSeen && <span title='New Message' className='h-2 w-2 rounded-full bg-[#6d94c6]'></span>}
             <span title='Time'>{time}</span>
           </div>}
         </div>
-        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in-out  truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} ${!hasSeen ? 'font-medium' : ''}`}>{lastMessage}</p> : <p className='text-xs text-gray-500'>Started Conversation</p>}
+        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in-out  truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500'>Started Conversation</p>}
       </div>}
 
     </div>

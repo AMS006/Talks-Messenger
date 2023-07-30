@@ -25,9 +25,6 @@ model User {
   conversationIds           String[] @db.ObjectId
   conversations             Conversation[]  @relation(fields: [conversationIds], references: [id])
 
-  seenMessageIds            String[] @db.ObjectId
-  seenMessags               Message[] @relation("SeenUsers",fields:[seenMessageIds], references: [id])
-
   accounts                  Account[]
   messages                  Message[] @relation("Sender")
 }
@@ -74,9 +71,6 @@ model Message {
 
   conversationId            String @db.ObjectId
   conversation              Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  seenUserIds               String[] @db.ObjectId
-  seenUsers                 User[] @relation("SeenUsers",fields: [seenUserIds], references: [id])
 
   senderId                  String @db.ObjectId
   sender                    User @relation("Sender",fields: [senderId], references: [id], onDelete: Cascade)

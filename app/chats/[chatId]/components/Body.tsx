@@ -1,18 +1,18 @@
 'use client'
+import axios from 'axios'
 import { pusherClient } from '@/app/libs/pusher'
 import MessageBox from './MessageBox'
 import { useAppSelector } from '@/app/redux/hooks'
 import { useEffect, useRef, useState } from 'react'
 import { MessageType } from '@/app/types'
 import { useParams } from 'next/navigation'
-import axios from 'axios'
 import Loader from '@/app/components/Loader'
 
 const Body = () => {
 
   const [messages, setMessages] = useState<MessageType[]>([])
   const [loading, setLoading] = useState<Boolean>(false);
-  const { mode,user } = useAppSelector((state) => state.user)
+  const { mode} = useAppSelector((state) => state.user)
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const params = useParams()
@@ -30,15 +30,6 @@ const Body = () => {
     if (params && params.chatId)
       fetchMessages()
   }, [])
-  useEffect(() =>{
-    if(messages && messages.length > 0 && params && user){
-      let idx = messages[messages.length -1].seenUserIds.find((id) => id === user.id)
-      if(idx === undefined)
-        axios.post(`/api/conversation/${params.chatId}/seen`)
-      bottomRef?.current?.scrollIntoView();
-      }
-  },[messages])
-
   useEffect(() => {
     bottomRef?.current?.scrollIntoView();
 

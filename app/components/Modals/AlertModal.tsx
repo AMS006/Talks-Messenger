@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
+import { useAppDispatch } from '@/app/redux/hooks'
+import { setProfileBar } from '@/app/redux/user/slice'
 
 interface props{
     title:string
@@ -10,12 +12,14 @@ interface props{
     setIsConfirm: Dispatch<SetStateAction<boolean>>
 }
 function AlertModal({title,description,isOpen,setIsOpen,setIsConfirm}:props) {
+  const dispatch = useAppDispatch()
     function closeModal() {
         setIsOpen(false)
     }
     function handleSubmit(){
         setIsConfirm(true)
         setIsOpen(false)
+        dispatch(setProfileBar(false))
     }
   return (
     <Transition appear show={isOpen} as={Fragment}>
