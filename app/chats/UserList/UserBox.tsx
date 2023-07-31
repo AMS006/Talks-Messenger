@@ -79,7 +79,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
             <span title='Time' className='select-none'>{time}</span>
           </div>}
         </div>
-        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in- select-none truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500'>Started Conversation</p>}
+        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in- select-none truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500 select-none'>Started Conversation</p>}
       </div>}
 
     </div>

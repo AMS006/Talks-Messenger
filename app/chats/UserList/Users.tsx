@@ -90,7 +90,7 @@ const Users = () => {
         setCurrConversations(otherConversations)
         dispatch(deleteConversation(conversation))
         router.push('/chats')
-        toast.error("Conversation Deleted")
+        toast.success("Conversation Deleted")
       }
     }
     // Handle Realtime update in conversation List

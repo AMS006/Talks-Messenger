@@ -5,7 +5,6 @@ import './globals.css'
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
 import ActiveStatus from './components/ActiveStatus'
-import logo from '../public/logo.png'
 
 export default function RootLayout({
   children,
@@ -28,8 +27,8 @@ export default function RootLayout({
       <body>
         <Provider store={store}>
           <SessionProvider>
-            <Toaster />
             <ActiveStatus />
+            <Toaster />
             {children}
           </SessionProvider>
         </Provider>
