@@ -9,7 +9,7 @@ Talks Messenger is a Real Time Chat app where user can do one to one and group c
 
 ## Demo Video
 
--[Video](https://www.youtube.com/watch?v=3XMKYP3ZBuU)
+- [Video](https://www.youtube.com/watch?v=3XMKYP3ZBuU)
 
 # Features
 
