@@ -28,22 +28,22 @@ const GroupCreateModal: React.FC<InputProps> = ({ isOpen, onClose, allUsers, def
         if (data.members && data.members.length > 0)
             allUsers = data.members.map((user: any) => user.label)
 
-        onClose()
         if (isUpdate) {
             await axios.post('/api/conversation', { ...data, isGroup: true, conversationId: currConversation?.id }).then(async () => {
-                if (currConversation && allUsers && allUsers.length > 0)
-                    await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: currConversation?.id })
+            if (currConversation && allUsers && allUsers.length > 0)
+                await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: currConversation?.id })
             })
-
+                
         } else {
             await axios.post('/api/conversation', { ...data, isGroup: true }).then(async (data) => {
                 const conversationData = data.data.conversation
-
+                
                 await axios.post('/api/message', { text: `created the group`, conversationId: conversationData.id, messageType: "user" });
                 await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: conversationData.id })
-
+                
             })
         }
+        onClose()
         setValue('members', [])
     }
 

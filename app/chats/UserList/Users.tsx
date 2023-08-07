@@ -74,7 +74,6 @@ const Users = () => {
     // Handle Realtime add new conversation
     function handleNewConversation(conversation: ConversationType) {
       if (conversation) {
-        console.log(conversation)
         dispatch(addConversations(conversation))
         setCurrConversations((current) => {
           if (find(current, { id: conversation.id }))
@@ -107,7 +106,6 @@ const Users = () => {
     // Handle Realtime update in group conversation
     function handleGroupConversationUpdate(conversation: ConversationType) {
       if (conversation) {
-        console.log(conversation)
         dispatch(updateConversation(conversation))
         setCurrConversations((current) => current.map((conver) => {
           if (conver.id === conversation.id) {
@@ -132,7 +130,6 @@ const Users = () => {
     }
     // Handles group conversation leave
     async function handleGroupLeaveConversation(conversation: ConversationType) {
-      console.log(conversation)
       toast.success("Conversation Deleted")
       dispatch(deleteConversation(conversation))
     }
