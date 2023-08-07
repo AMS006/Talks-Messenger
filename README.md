@@ -7,6 +7,10 @@ Talks Messenger is a Real Time Chat app where user can do one to one and group c
 
 - [Talks Messenger](https://talks-messenger.vercel.app/)
 
+## Demo Video
+
+- [Video](https://www.youtube.com/watch?v=3XMKYP3ZBuU)
+
 # Features
 
 - Sign Up
