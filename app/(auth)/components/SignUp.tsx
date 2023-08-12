@@ -1,12 +1,12 @@
 'use client'
 import axios from 'axios'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Input from './Input'
 import { toast } from 'react-hot-toast';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/app/redux/hooks';
+import { signIn } from 'next-auth/react';
+
+import Input from '@/components/Input'
+import { useAppSelector } from '@/redux/hooks';
 
 interface signInProps {
     setActiveRoute: Dispatch<SetStateAction<string>>
@@ -15,13 +15,7 @@ function SignUp({ setActiveRoute }: signInProps) {
 
     const [loading, setIsLoading] = useState(false)
     const { mode } = useAppSelector((state) => state.user)
-    const session = useSession()
-    const router = useRouter()
-    useEffect(() => {
-        if (session?.status === 'authenticated') {
-            router.push('/chats')
-        }
-    }, [session.status,router])
+
     const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
         defaultValues: {
             name: '',
@@ -36,14 +30,19 @@ function SignUp({ setActiveRoute }: signInProps) {
                 if (callback?.error)
                     toast.error("Invalid Credentials")
 
-                if (!callback?.error && callback?.ok)
-                    toast.success("LoggedIn successfully")
+                if (!callback?.error && callback?.ok){
+                    toast.success("Registration Successfull")
+                    setActiveRoute("signIn")
+                }
             })
         }).catch((err) => {
             toast.error("User Already Exists")
         }).finally(() => setIsLoading(false))
     }
     return (
+        <>
+            <h1 className="text-xl font-semibold">Register on Talks Messenger</h1>
+            <p className='pb-2.5'>To communicate with your friends and family</p>
         <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
             <h1 className='font-semibold text-2xl'>Sign Up</h1>
             <div>
@@ -96,6 +95,7 @@ function SignUp({ setActiveRoute }: signInProps) {
                 </form>
             </div>
         </div>
+        </>
     )
 }
 

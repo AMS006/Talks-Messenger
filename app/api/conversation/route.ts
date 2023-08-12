@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
-import prisma from '../../libs/prismaDb'
-import getUserDetails from '@/app/actions/getUserDetail'
-import { pusherServer } from '@/app/libs/pusher'
+
+import prisma from '@/libs/prismaDb'
+import getUserDetails from '@/actions/getUserDetail'
+import { pusherServer } from '@/libs/pusher'
 
 export async function POST(req: Request) {
     try {

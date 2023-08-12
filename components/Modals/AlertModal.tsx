@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { useAppDispatch } from '@/app/redux/hooks'
-import { setProfileBar } from '@/app/redux/user/slice'
+import { useAppDispatch } from '@/redux/hooks'
+import { setProfileBar } from '@/redux/user/slice'
 
 interface props{
     title:string

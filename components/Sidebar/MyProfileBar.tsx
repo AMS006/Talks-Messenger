@@ -1,6 +1,6 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
 import Avatar from 'react-avatar';
 import { signOut } from 'next-auth/react'
 import { BiArrowBack } from 'react-icons/bi'
@@ -9,9 +9,10 @@ import { FiCheck } from 'react-icons/fi'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { CldUploadButton } from 'next-cloudinary'
 import Image from 'next/image'
+
 import Loader from '../Loader'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { setCurrUser, setMyProfileBar } from '@/app/redux/user/slice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setCurrUser, setMyProfileBar } from '@/redux/user/slice';
 
 function MyProfileBar() {
     const [name, setName] = useState<string>('')

@@ -1,4 +1,4 @@
-import { ConversationType, MessageType } from "@/app/types"
+import { ConversationType, MessageType } from "@/types"
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit'
 export interface Conversations {
     loading: boolean

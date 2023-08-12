@@ -1,13 +1,14 @@
 'use client'
-import { MessageType } from '@/app/types'
-import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import calendar from 'dayjs/plugin/calendar'
-import { useAppSelector } from '@/app/redux/hooks'
 import ModalImage from "react-modal-image";
-import getImageUrl from '@/app/libs/getImageUrl'
-dayjs.extend(calendar)
+import React, { useEffect, useState } from 'react'
+import calendar from 'dayjs/plugin/calendar'
 
+import { MessageType } from '@/types'
+import { useAppSelector } from '@/redux/hooks'
+import getImageUrl from '@/libs/getImageUrl'
+
+dayjs.extend(calendar)
 
 const MessageBox = ({ message }: { message: MessageType }) => {
   const { user } = useAppSelector((state) => state.user)

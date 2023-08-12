@@ -1,11 +1,13 @@
+import axios from 'axios'
 import React from 'react'
+import Select from 'react-select'
+
 import Modal from './Modal'
 import { User } from '@prisma/client'
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form'
-import Input from '@/app/(site)/components/Input'
-import Select from 'react-select'
-import axios from 'axios'
-import { useAppSelector } from '@/app/redux/hooks'
+import Input from '@/components/Input'
+import { useAppSelector } from '@/redux/hooks'
+
 interface InputProps {
     isOpen: boolean,
     onClose: () => void,

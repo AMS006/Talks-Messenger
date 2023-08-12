@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
-import prisma from '../../libs/prismaDb'
-import getSession from '@/app/actions/getSession'
+
+import prisma from '@/libs/prismaDb'
+import getSession from '@/actions/getSession'
 
 export async function POST(req: Request) {
     try {

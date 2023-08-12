@@ -1,8 +1,7 @@
-'use client'
 import React from 'react'
+
 import SearchUserBox from './SearchUserBox'
 import { User } from '@prisma/client'
-
 
 const SearchUserList = ({ users }: { users: User[] | undefined }) => {
 

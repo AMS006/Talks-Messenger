@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
-import prisma from '../../libs/prismaDb'
 import { NextResponse } from 'next/server';
+
+import prisma from '@/libs/prismaDb'
+
 export async function PUT(req: Request) {
     const body = await req.json();
 

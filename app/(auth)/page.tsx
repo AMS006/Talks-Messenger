@@ -1,17 +1,18 @@
 'use client'
 import Image from "next/image"
-import logo from '../../public/logo.png'
 import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { MdDarkMode, MdLightMode } from "react-icons/md"
+
+import logo from '@/public/logo.png'
 import SignIn from "./components/SignIn"
 import SignUp from "./components/SignUp"
 import ForgotPassword from "./components/ForgotPassword"
 import NewPassword from "./components/NewPassword"
 import VerificationCode from "./components/VerificationCode"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { MdDarkMode, MdLightMode } from "react-icons/md"
-import { setUserMode } from "../redux/user/slice"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { setUserMode } from "@/redux/user/slice"
 
 export default function Home() {
   const [activeRoute, setActiveRoute] = useState('signIn')
@@ -55,9 +56,8 @@ export default function Home() {
               <MdLightMode size={28} />
             </button>}
         </div>
-        <div className="flex flex-col justify-center items-center gap-1 py-4">
+        <div className="flex flex-col justify-center items-center gap-1 py-2">
           <Image src={logo} alt="logo" width={48} height={48} />
-          <h1 className="text-xl font-semibold">Sign In to Your Account</h1>
         </div>
         {activeRoute === 'signIn' && <SignIn setActiveRoute={setActiveRoute} />}
         {activeRoute === 'signUp' && <SignUp setActiveRoute={setActiveRoute} />}

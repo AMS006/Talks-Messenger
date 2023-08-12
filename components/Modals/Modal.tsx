@@ -1,12 +1,21 @@
 'use client';
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ClipLoader } from 'react-spinners';
+import { IoClose } from 'react-icons/io5'
 
-const LoadingModal = () => {
+import { useAppSelector } from '@/redux/hooks';
+
+interface ModalProps {
+  isOpen?: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  const { mode } = useAppSelector((state) => state.user)
   return (
-    <Transition.Root show as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={() => { }}>
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -20,8 +29,8 @@ const LoadingModal = () => {
             className="
               fixed 
               inset-0 
-              bg-gray-100 
-              bg-opacity-50 
+              bg-gray-500 
+              bg-opacity-75 
               transition-opacity
             "
           />
@@ -36,6 +45,7 @@ const LoadingModal = () => {
               justify-center 
               p-4 
               text-center 
+              sm:p-0
             "
           >
             <Transition.Child
@@ -47,8 +57,29 @@ const LoadingModal = () => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel>
-                <ClipLoader size={40} color="#0284c7" />
+              <Dialog.Panel
+                className={`
+                  relative 
+                  transform 
+                  overflow-hidden 
+                  rounded-lg 
+                  ${mode === 'light' ? 'bg-light-1 text-black' :
+                    'bg-dark-1 text-white'}
+                  
+                  px-4 
+                  pb-4
+                  pt-5 
+                  text-left 
+                  shadow-xl 
+                  transition-all
+                  w-full
+                  sm:my-8 
+                  sm:w-full 
+                  sm:max-w-lg 
+                  sm:p-6
+                  `}
+              >
+                {children}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -58,4 +89,4 @@ const LoadingModal = () => {
   )
 }
 
-export default LoadingModal;
+export default Modal;

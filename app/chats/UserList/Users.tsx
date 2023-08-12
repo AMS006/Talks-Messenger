@@ -1,20 +1,22 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineUsergroupAdd } from 'react-icons/ai'
+import { find } from 'lodash'
 import { toast } from 'react-hot-toast'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { find } from 'lodash'
+import Link from 'next/link'
+
+import GroupCreateModal from '@/components/Modals/GroupCreateModal'
 import { User } from '@prisma/client'
 import UserBox from './UserBox'
-import logo from '../../../public/logo.png'
-import { addConversations, deleteConversation, setAllConversations, updateConversation } from '@/app/redux/conversation/slice'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import GroupCreateModal from '@/app/components/Modals/GroupCreateModal'
-import { ConversationType } from '@/app/types'
-import { pusherClient } from '@/app/libs/pusher'
-import Loader from '@/app/components/Loader'
+import logo from '@/public/logo.png'
+import { addConversations, deleteConversation, setAllConversations, updateConversation } from '@/redux/conversation/slice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { ConversationType } from '@/types'
+import { pusherClient } from '@/libs/pusher'
+import Loader from '@/components/Loader'
 
 const Users = () => {
   const { conversations } = useAppSelector((state) => state.conversation)
@@ -26,19 +28,19 @@ const Users = () => {
   const [currConversations, setCurrConversations] = useState<ConversationType[]>([])
   const [sortedConversations, setSortedConversations] = useState<ConversationType[]>([])
   const [allUsers, setAllUsers] = useState<User[]>()
-  const [loading,setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() =>{
-    async function fetchConversation(){
+  useEffect(() => {
+    async function fetchConversation() {
       setLoading(true);
       const response = await axios.get('/api/conversation');
-      if(response.data){
+      if (response.data) {
         dispatch(setAllConversations(response.data.conversations))
         setLoading(false);
       }
     }
     fetchConversation()
-  },[dispatch])
+  }, [dispatch])
 
   // SettingUp Initial Conversations
   useEffect(() => {
@@ -54,18 +56,6 @@ const Users = () => {
   const defaultValues = {
     name: "",
     members: []
-  }
-
-  // Getting all users from the list of conversation
-  const getAllUsers = () => {
-    let allFinalUsers: User[] = []
-    currConversations.map((conversation) => {
-      if (!conversation.isGroup && user) {
-        const userData = conversation.users.filter((u: any) => u.id !== user?.id);
-        allFinalUsers.push(userData[0]);
-      }
-    })
-    setAllUsers(allFinalUsers)
   }
 
   // For Handling Pusher Requests
@@ -166,7 +156,14 @@ const Users = () => {
       })
       setSortedConversations(updatedSortedConverstion)
 
-      getAllUsers()
+      let allFinalUsers: User[] = []
+      currConversations.map((conversation) => {
+        if (!conversation.isGroup && user) {
+          const userData = conversation.users.filter((u: any) => u.id !== user?.id);
+          allFinalUsers.push(userData[0]);
+        }
+      })
+      setAllUsers(allFinalUsers)
     }
   }, [currConversations])
 
@@ -186,9 +183,12 @@ const Users = () => {
         <div className={`flex flex-col overflow-auto scrollbar transition-colors duration-300 ease-in-out h-full md:pb-0 pb-16 ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2'}`}>
           {sortedConversations && sortedConversations.length > 0 ? sortedConversations.map((conversation, index) => (
             <UserBox conversation={conversation} key={index} />
-          )) : loading? <div className='flex justify-center items-center py-4'> <Loader height='28px' width='28px'/> </div>:
+          )) : loading ? <div className='flex justify-center items-center py-4'> <Loader height='28px' width='28px' /> </div> :
             <div className='flex justify-center items-center py-6'>
-              <p className={`${mode === 'light' ? 'text-black' : 'text-gray-400'}`}>No Conversations Found</p>
+              <div className={`${mode === 'light' ? 'text-black' : 'text-gray-400'} text-center flex flex-col gap-2`}>
+                <p>No Conversations Found</p>
+                <p className='text-sm'><Link href='/users' className={`${mode === 'light' ? '' : 'text-white hover:underline'}`}>Click Here</Link> to Start a New Conversation</p>
+              </div>
             </div>}
         </div>
       </aside>

@@ -1,14 +1,14 @@
-'use client'
 import React, { useState } from 'react'
+import axios from 'axios'
 import Image from 'next/image'
 import { IoAdd } from 'react-icons/io5'
+import { toast } from 'react-hot-toast'
 import { User } from '@prisma/client'
 import Avatar from 'react-avatar'
-import axios from 'axios'
-import Loader from '@/app/components/Loader'
-import { useAppDispatch } from '@/app/redux/hooks'
-import { addConversations } from '@/app/redux/conversation/slice'
-import { toast } from 'react-hot-toast'
+
+import { useAppDispatch } from '@/redux/hooks'
+import { addConversations } from '@/redux/conversation/slice'
+import Loader from '@/components/Loader'
 
 const SearchUserBox = ({ user }: { user: User | undefined }) => {
 

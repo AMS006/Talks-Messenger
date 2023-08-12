@@ -1,10 +1,11 @@
 'use client'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Input from './Input'
-import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { useAppSelector } from '@/app/redux/hooks';
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+
+import { useAppSelector } from '@/redux/hooks';
+import Input from '@/components/Input'
 
 interface VerificationCodeProps {
     setActiveRoute: Dispatch<SetStateAction<string>>,
@@ -31,7 +32,7 @@ const VerificationCode = ({ setActiveRoute, code, email }: VerificationCodeProps
     return (
         <div className={`flex flex-col items-center  rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
             <h1 className='font-semibold text-2xl py-2'>Verify Email Id</h1>
-            <p className='text-xs py-4'>Enter the code send on your email to verify your account</p>
+            <p className='text-xs py-4'>Enter the verification code send on your email to verify your account</p>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     type={'text'}

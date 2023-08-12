@@ -1,15 +1,16 @@
 'use client'
 import Link from 'next/link'
+import Avatar from 'react-avatar'
 import { useParams, usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { BsChatText } from 'react-icons/bs'
 import { FaUserFriends } from 'react-icons/fa'
-import MyProfileBar from './MyProfileBar'
-import Image from 'next/image'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import Avatar from 'react-avatar'
-import { setMyProfileBar, setUserMode } from '@/app/redux/user/slice'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
+import Image from 'next/image'
+
+import MyProfileBar from './MyProfileBar'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setMyProfileBar, setUserMode } from '@/redux/user/slice'
 
 const BottomBarMobile = () => {
   const path = usePathname()

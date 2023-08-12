@@ -4,17 +4,18 @@ import Image from 'next/image'
 import Avatar from 'react-avatar'
 import { MdDelete } from 'react-icons/md'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { MdOutlinePersonAddAlt1 } from 'react-icons/md'
+import { BiExit } from 'react-icons/bi'
+
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setProfileBar } from '@/redux/user/slice'
+import { clearMessages } from '@/redux/conversation/slice'
+import { User } from '@prisma/client'
 import GroupUserBox from './GroupUserBox'
 import GroupCreateModal from '../Modals/GroupCreateModal'
-import { User } from '@prisma/client'
-import { BiExit } from 'react-icons/bi'
-import { MdOutlinePersonAddAlt1 } from 'react-icons/md'
-import { useRouter } from 'next/navigation'
-import { setProfileBar } from '@/app/redux/user/slice'
 import AlertModal from '../Modals/AlertModal'
-import { clearMessages } from '@/app/redux/conversation/slice'
 
 interface data {
     name?: string | null,
@@ -122,7 +123,7 @@ const ProfileSideBar: React.FC<data> = ({ name, email, image }) => {
         setOtherUsers(memberData)
         if (conversations)
             getAllUsers()
-    }, [currConversation, conversations])
+    }, [currConversation, conversations,user?.id])
 
     return (
         <>
@@ -177,6 +178,9 @@ const ProfileSideBar: React.FC<data> = ({ name, email, image }) => {
                                 <MdOutlinePersonAddAlt1 size={20} />
                                 <span>Users</span>
                             </button>
+                        </div>
+                        <div className='px-4'>
+                            <p>Total Members: {currConversation?.users?.length}</p>
                         </div>
                         <div className='flex flex-col gap-4 px-3 py-2'>
                             {user && <div className='border-b flex gap-3 py-2 items-center'>

@@ -1,16 +1,17 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { BiArrowBack } from 'react-icons/bi'
+import Avatar from 'react-avatar'
 import Image from 'next/image'
 import Link from 'next/link'
-import ProfileSideBar from '@/app/components/Sidebar/ProfileSideBar'
-import { User } from '@prisma/client'
-import Avatar from 'react-avatar'
+import { BiArrowBack } from 'react-icons/bi'
 import { useParams } from 'next/navigation'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { setCurrConversation } from '@/app/redux/conversation/slice'
 import { TiGroup } from 'react-icons/ti'
-import { setProfileBar } from '@/app/redux/user/slice'
+
+import { User } from '@prisma/client'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setCurrConversation } from '@/redux/conversation/slice'
+import { setProfileBar } from '@/redux/user/slice'
+import ProfileSideBar from '@/components/Sidebar/ProfileSideBar'
 
 const Header = () => {
 
@@ -38,13 +39,13 @@ const Header = () => {
                     dispatch(setCurrConversation(conversation))
             })
         }
-    }, [param])
+    }, [param,conversations,dispatch])
     useEffect(() => {
         if (currConversation && user && currConversation.users) {
-            let userData = currConversation.users.filter((u) => u.id !== user?.id)
+            let userData = currConversation.users.filter((u:any) => u.id !== user?.id)
             setOtherUser(userData[0])
         }
-    }, [currConversation])
+    }, [currConversation,user])
     return (
         <>
             {otherUser && <ProfileSideBar name={otherUser?.name} email={otherUser?.email} image={otherUser?.image} />}

@@ -1,4 +1,3 @@
-'use client'
 import Header from './components/Header'
 import InputBox from './components/InputBox'
 import Body from './components/Body'

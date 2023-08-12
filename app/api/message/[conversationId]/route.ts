@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
-import prisma from '../../../libs/prismaDb'
-import { pusherServer } from '@/app/libs/pusher'
+
+import prisma from '@/libs/prismaDb'
+import { pusherServer } from '@/libs/pusher'
+
 interface Iparams {
     conversationId?: string
 }

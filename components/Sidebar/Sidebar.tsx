@@ -1,6 +1,6 @@
 import DesktopSidebar from './DesktopSidebar'
 import BottomBarMobile from './BottomBarMobile'
-import getUserDetails from '@/app/actions/getUserDetail'
+import getUserDetails from '@/actions/getUserDetail'
 
 const Sidebar = async ({ children }: { children: React.ReactNode }) => {
 

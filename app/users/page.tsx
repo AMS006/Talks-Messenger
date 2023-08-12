@@ -1,11 +1,12 @@
 'use client'
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
-import SearchUserList from './components/SearchUserList'
-import axios from 'axios'
 import { User } from '@prisma/client'
-import Loader from '../components/Loader'
-import { useAppSelector } from '../redux/hooks'
+
+import SearchUserList from './components/SearchUserList'
+import Loader from '@/components/Loader'
+import { useAppSelector } from '@/redux/hooks'
 
 const Users = () => {
     const [searchUsers, setSearchUsers] = useState<User[]>()
@@ -15,12 +16,11 @@ const Users = () => {
     const { conversations } = useAppSelector((state) => state.conversation)
     const { user, mode } = useAppSelector((state) => state.user)
 
-
     const getOtherUsers = () => {
         if (conversations) {
             const otherUsers = conversations.map((conversation) => {
                 if (user && !conversation.isGroup) {
-                    const userData = conversation.users.filter((cUser) => cUser.id !== user?.id)
+                    const userData = conversation.users.filter((cUser: any) => cUser.id !== user?.id)
                     return userData[0].id
                 }
             })
@@ -58,6 +58,7 @@ const Users = () => {
             setSearchUsers(allUser)
         }
     }, [conversations])
+
     return (
         <div className={`flex flex-col items-center transition-colors duration-300 ease-in-out w-full h-full p-4 overflow-y-auto ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-2 text-white'}`}>
             <h2 className='font-semibold text-2xl py-2'>Search for Users</h2>

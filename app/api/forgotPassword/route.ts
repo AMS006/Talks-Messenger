@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-import bcrypt from 'bcrypt'
 
-import prisma from '../../libs/prismaDb'
-import sendEmail from '@/app/actions/sendEmail'
+import prisma from '@/libs/prismaDb'
+import sendEmail from '@/actions/sendEmail'
 
 export async function POST(request: Request, responce: NextResponse) {
 
@@ -32,5 +31,5 @@ export async function POST(request: Request, responce: NextResponse) {
         code: userData.resetCode || ''
     }
     sendEmail(data)
-    return NextResponse.json({ message: "Email Send To User" })
+    return NextResponse.json({ message: "Verification Code Send on User Email Id" })
 }

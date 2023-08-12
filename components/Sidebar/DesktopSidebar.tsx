@@ -1,19 +1,20 @@
 'use client'
-import { signOut, } from 'next-auth/react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import { signOut, } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+import Avatar from 'react-avatar'
 import { BsChatText } from 'react-icons/bs'
 import { FaUserFriends } from 'react-icons/fa'
 import { BiLogOut } from 'react-icons/bi'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import logo from '../../../public/logo.png'
+
+import logo from '@/public/logo.png'
 import MyProfileBar from './MyProfileBar'
-import Avatar from 'react-avatar'
 import { User } from '@prisma/client'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { setCurrUser, setMyProfileBar, setUserMode } from '@/app/redux/user/slice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setCurrUser, setMyProfileBar, setUserMode } from '@/redux/user/slice'
 
 const DesktopSidebar = ({currUser }: { currUser: User }) => {
     const path = usePathname()
@@ -29,7 +30,7 @@ const DesktopSidebar = ({currUser }: { currUser: User }) => {
             dispatch(setCurrUser(currUser))
         }
 
-    }, [dispatch,currUser])
+    }, [dispatch,currUser,user])
 
     useEffect(() => {
         if (!localStorage.mode) {

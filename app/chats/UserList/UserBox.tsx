@@ -1,14 +1,16 @@
 'use client'
-import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
-import { User } from '@prisma/client'
-import { ConversationType} from '@/app/types'
-import Avatar from 'react-avatar'
-import { useParams, useRouter } from 'next/navigation'
-import { TiGroup } from 'react-icons/ti'
 import dayjs from 'dayjs'
+import Image from 'next/image'
+import Avatar from 'react-avatar'
 import calendar from 'dayjs/plugin/calendar'
-import { useAppSelector } from '@/app/redux/hooks'
+import { TiGroup } from 'react-icons/ti'
+import React, { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+
+import { User } from '@prisma/client'
+import { ConversationType } from '@/types'
+import { useAppSelector } from '@/redux/hooks'
+
 dayjs.extend(calendar)
 
 const UserBox = ({ conversation }: { conversation: ConversationType }) => {
@@ -18,16 +20,16 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
 
   const [time, setTime] = useState<string>()
   const [lastMessage, setLastMessage] = useState<string | null>('')
-  const [isActive,setIsActive] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(false)
 
-  useEffect(() =>{
+  useEffect(() => {
     setIsActive(false)
-    if(activeUsers && activeUsers.length>0 && otherUser){
+    if (activeUsers && activeUsers.length > 0 && otherUser) {
       let active = activeUsers.find((email) => email === otherUser?.email)
-      if(active)
+      if (active)
         setIsActive(true)
     }
-  },[activeUsers,otherUser])
+  }, [activeUsers, otherUser])
 
   useEffect(() => {
     setLastMessage('')
@@ -42,7 +44,8 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
     }
     const userData = conversation.users.filter((u: any) => u.id !== user?.id)
     setOtherUser(userData[0])
-  }, [conversation])
+  }, [conversation, user?.id])
+
   useEffect(() => {
     if (lastMessage) {
       let data = dayjs(conversation.lastMessageAt).calendar(null, {
@@ -53,7 +56,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
       })
       setTime(data)
     }
-  }, [lastMessage])
+  }, [lastMessage, conversation.lastMessageAt])
 
   const router = useRouter()
   const params = useParams()
@@ -65,7 +68,7 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
       {otherUser && !conversation.isGroup && <div className='relative'>
         {otherUser.image ? <Image src={otherUser?.image} height={38} width={38} className='rounded-full w-[38px] h-[38px]' alt={conversation.name || 'conversation'} /> :
           otherUser.name && <Avatar name={otherUser.name} size='38' round style={{ fontSize: '15px' }} />}
-          {isActive && <span className='h-2 w-2 bg-green-600 rounded-full absolute top-1 right-0 z-20' title='Active'/>}
+        {isActive && <span className='h-2 w-2 bg-green-600 rounded-full absolute top-1 right-0 z-20' title='Active' />}
       </div>}
       {conversation.isGroup &&
         <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out  bg-opacity-40  p-1.5 ${mode && mode === 'light' ? 'text-text-light-1 bg-b-light1' : 'bg-light-1 text-white'}`}>

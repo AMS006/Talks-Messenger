@@ -1,12 +1,13 @@
 'use client'
 import axios from 'axios'
-import { pusherClient } from '@/app/libs/pusher'
-import MessageBox from './MessageBox'
-import { useAppSelector } from '@/app/redux/hooks'
 import { useEffect, useRef, useState } from 'react'
-import { MessageType } from '@/app/types'
 import { useParams } from 'next/navigation'
-import Loader from '@/app/components/Loader'
+
+import { pusherClient } from '@/libs/pusher'
+import MessageBox from './MessageBox'
+import { useAppSelector } from '@/redux/hooks'
+import { MessageType } from '@/types'
+import Loader from '@/components/Loader'
 
 const Body = () => {
 
