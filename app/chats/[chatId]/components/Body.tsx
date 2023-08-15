@@ -1,36 +1,28 @@
 'use client'
-import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'next/navigation'
 
-import { pusherClient } from '@/libs/pusher'
 import MessageBox from './MessageBox'
+import { pusherClient } from '@/libs/pusher'
 import { useAppSelector } from '@/redux/hooks'
 import { MessageType } from '@/types'
-import Loader from '@/components/Loader'
+import { Conversation, User } from '@prisma/client'
 
-const Body = () => {
+interface InputProps {
+  initialMessages: MessageType[]
+  chatId: string
+  user: User
+  conversation: Conversation & {
+    users: User[]
+  } | null
+}
 
-  const [messages, setMessages] = useState<MessageType[]>([])
-  const [loading, setLoading] = useState<Boolean>(false);
-  const { mode} = useAppSelector((state) => state.user)
+const Body: React.FC<InputProps> = ({ initialMessages, chatId, user, conversation }) => {
+
+  const [messages, setMessages] = useState<MessageType[]>(initialMessages)
+  const { mode } = useAppSelector((state) => state.user)
 
   const bottomRef = useRef<HTMLDivElement>(null);
-  const params = useParams()
-  const { currConversation } = useAppSelector((state) => state.conversation)
 
-  useEffect(() => {
-    async function fetchMessages() {
-      setLoading(true);
-      if(params && params.chatId){
-        await axios.get(`/api/message/${params.chatId}`).then((data) => {
-          setMessages(data.data.messages)
-        }).finally(() => setLoading(false))
-      }
-    }
-    if (params && params.chatId)
-      fetchMessages()
-  }, [])
   useEffect(() => {
     bottomRef?.current?.scrollIntoView();
 
@@ -40,34 +32,35 @@ const Body = () => {
       });
       bottomRef?.current?.scrollIntoView()
     }
-    if (currConversation) {
-      pusherClient.subscribe(currConversation.id)
+    if (chatId) {
+      pusherClient.subscribe(chatId)
 
       pusherClient.bind('message:new', messageHandler)
       pusherClient.bind('message:delete', () => setMessages([]))
 
       return () => {
-        pusherClient.unsubscribe(currConversation.id)
+        pusherClient.unsubscribe(chatId)
         pusherClient.unbind('message:new')
       }
     }
-  }, [currConversation])
+  }, [chatId])
 
-  if(loading){
-    return(
-      <div className={`h-full w-full flex justify-center items-center ${mode && mode === 'light'?'bg-light-1':'bg-dark-1'}`}>
-          <Loader height='36px' width='36px' />
-      </div>
-    )
-  }
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted)
+    return null
+
   return (
-    <div className={`flex-1 overflow-y-auto py-2 px-2 scrollbar ${mode && mode === 'light'?'bg-light-1':'bg-dark-1'}`}>
+    <div className={`flex-1 overflow-y-auto py-2 px-2 scrollbar ${mode === 'dark' ? 'bg-dark-1' : 'bg-light-1'}`}>
       {
-        messages.map((message,index) =>(
-          <MessageBox message={message} key={index} />
+        messages.map((message, index) => (
+          <MessageBox message={message} user={user} conversation={conversation} key={index} />
         ))
       }
-      <div className='pt-24' ref={bottomRef}/>
+      <div className='pt-24' ref={bottomRef} />
     </div>
   )
 }

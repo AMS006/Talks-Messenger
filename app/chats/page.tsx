@@ -1,7 +1,7 @@
 import React from 'react'
 import EmptyState from '@/components/EmptyState'
 
-const page = () => {
+const Page = () => {
 
   return (
     <>
@@ -12,4 +12,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

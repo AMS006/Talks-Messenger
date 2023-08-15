@@ -1,6 +1,6 @@
 import Sidebar from "@/components/Sidebar/Sidebar"
 
-const UsersLayout =  ({ children }: { children: React.ReactNode }) => {
+const UsersLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <div className="text-black h-full w-full ">

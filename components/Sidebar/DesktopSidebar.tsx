@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { signOut, } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
@@ -14,23 +14,18 @@ import logo from '@/public/logo.png'
 import MyProfileBar from './MyProfileBar'
 import { User } from '@prisma/client'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { setCurrUser, setMyProfileBar, setUserMode } from '@/redux/user/slice'
+import { setMyProfileBar, setUserMode } from '@/redux/user/slice'
 
-const DesktopSidebar = ({currUser }: { currUser: User }) => {
+const DesktopSidebar = ({ user }: { user: User }) => {
     const path = usePathname()
     const dispatch = useAppDispatch()
 
-    const { user, myProfileBar, mode } = useAppSelector((state) => state.user)
+    const { myProfileBar, mode } = useAppSelector((state) => state.user)
     const toggleMode = (val: string) => {
         dispatch(setUserMode(val))
         localStorage.setItem("mode", val)
     }
-    useEffect(() => {
-        if (currUser && !user) {
-            dispatch(setCurrUser(currUser))
-        }
 
-    }, [dispatch,currUser,user])
 
     useEffect(() => {
         if (!localStorage.mode) {
@@ -55,12 +50,19 @@ const DesktopSidebar = ({currUser }: { currUser: User }) => {
             active: path === '/users'
         },
     ]
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted)
+        return null
     return (
         <>
-            {currUser && <div className='hidden md:block'>
-                <MyProfileBar />
-            </div>}
-            <div className={`hidden md:w-16 md:flex fixed left-0 z-40 flex-col py-2 transition-colors duration-300 ease-in-out border-r  shadow-lg h-full ${mode && mode === 'light' ? 'bg-light-1 border-b-light1 text-text-light-1' : 'bg-dark-1 text-white'}`}>
+            <div className='hidden md:block'>
+                <MyProfileBar user={user} />
+            </div>
+            <div className={`hidden md:w-16 md:flex fixed left-0 z-40 flex-col py-2 transition-colors duration-300 ease-in-out border-r  shadow-lg h-full ${mode === 'dark' ? 'bg-dark-1 text-white' : 'bg-light-1 border-b-light1 text-text-light-1'}`}>
                 <div className='flex flex-col items-center'>
                     <Image src={logo} alt="logo" width={48} height={48} title='Talks Messanger' />
                     <h6 className='text-sm font-bold'>Talks</h6>
@@ -80,11 +82,11 @@ const DesktopSidebar = ({currUser }: { currUser: User }) => {
                     </div>
                     <div className='flex flex-col justify-center items-center gap-3'>
                         <div className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 pt-1 px-1`}>
-                            {mode === "light" ? <button onClick={() => toggleMode("dark")}>
-                                <MdDarkMode size={28} />
+                            {mode === "dark" ? <button onClick={() => toggleMode("light")}>
+                                <MdLightMode size={28} />
                             </button> :
-                                <button onClick={() => toggleMode("light")}>
-                                    <MdLightMode size={28} />
+                                <button onClick={() => toggleMode("dark")}>
+                                    <MdDarkMode size={28} />
                                 </button>}
                         </div>
                         <div className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 p-1 ${myProfileBar ? ' bg-b-light1 bg-opacity-40' : ''}`} onClick={() => dispatch(setMyProfileBar(true))}>

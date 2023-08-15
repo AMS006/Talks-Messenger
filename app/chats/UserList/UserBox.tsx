@@ -13,9 +13,14 @@ import { useAppSelector } from '@/redux/hooks'
 
 dayjs.extend(calendar)
 
-const UserBox = ({ conversation }: { conversation: ConversationType }) => {
+interface InputProps {
+  conversation: ConversationType
+  user: User
+}
 
-  const { user, mode, activeUsers } = useAppSelector((state) => state.user)
+const UserBox: React.FC<InputProps> = ({ conversation, user }) => {
+
+  const { mode, activeUsers } = useAppSelector((state) => state.user)
   const [otherUser, setOtherUser] = useState<User>()
 
   const [time, setTime] = useState<string>()
@@ -71,18 +76,18 @@ const UserBox = ({ conversation }: { conversation: ConversationType }) => {
         {isActive && <span className='h-2 w-2 bg-green-600 rounded-full absolute top-1 right-0 z-20' title='Active' />}
       </div>}
       {conversation.isGroup &&
-        <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out  bg-opacity-40  p-1.5 ${mode && mode === 'light' ? 'text-text-light-1 bg-b-light1' : 'bg-light-1 text-white'}`}>
+        <div className={`flex items-center justify-center h-[38px] w-[38px] rounded-full transition-colors duration-300 ease-in-out  bg-opacity-40  p-1.5 ${mode === 'dark' ? 'bg-light-1 text-white' : 'text-text-light-1 bg-b-light1'}`}>
           <TiGroup size={28} />
         </div>}
       {otherUser && <div className='md:w-5/6 sm:w-11/12 w-5/6'>
         <div className='flex justify-between items-center gap-10 w-full'>
-          {!conversation.isGroup ? <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{otherUser.name}</h5> :
-            <h5 className={`truncate transition-colors select-none duration-300 ease-in-out ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}>{conversation.name}</h5>}
+          {!conversation.isGroup ? <h5 className={`truncate transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'text-white' : 'text-black'}`}>{otherUser.name}</h5> :
+            <h5 className={`truncate transition-colors select-none duration-300 ease-in-out ${mode === 'dark' ? 'text-white' : 'text-black'}`}>{conversation.name}</h5>}
           {time && conversation.messages && conversation.messages.length > 0 && <div className='text-gray-400  text-xs font-sans flex items-center gap-2'>
             <span title='Time' className='select-none'>{time}</span>
           </div>}
         </div>
-        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in- select-none truncate max-w-[60%] ${mode && mode === 'light' ? 'text-black' : 'text-white'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500 select-none'>Started Conversation</p>}
+        {lastMessage ? <p className={`text-xs transition-colors duration-300 ease-in- select-none truncate max-w-[60%] ${mode === 'dark' ? 'text-white' : 'text-black'} `}>{lastMessage}</p> : <p className='text-xs text-gray-500 select-none'>Started Conversation</p>}
       </div>}
 
     </div>

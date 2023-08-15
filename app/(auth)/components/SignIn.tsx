@@ -51,7 +51,7 @@ function SignIn({ setActiveRoute }: signInProps) {
         <>
             <h1 className="text-xl font-semibold">Sign In to your account</h1>
             <p className='pb-2.5'>To Continue with Talks Messenger</p>
-            <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
+            <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'bg-dark-1' : 'bg-light-1'}`}>
                 <h1 className='font-semibold text-2xl'>Sign In</h1>
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-3'>
@@ -77,7 +77,7 @@ function SignIn({ setActiveRoute }: signInProps) {
                         />
                         <button
                             type='submit'
-                            className={`w-full select-none bg-transparent border border-white ${mode && mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
+                            className={`w-full select-none bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
                             disabled={loading}
                         >
                             {!loading ? 'Login' : 'Signing...'}</button>
@@ -86,13 +86,13 @@ function SignIn({ setActiveRoute }: signInProps) {
                     <div className='text-center w-full pt-4'>
                         <button
                             onClick={() => setActiveRoute('forgotPassword')}
-                            className={`text-sm select-none font-semibold hover:underline ${mode && mode === 'light' ? 'text-gray-600' : 'text-white'} ${loading ? 'cursor-default opacity-50' : ''}`}
+                            className={`text-sm select-none font-semibold hover:underline ${mode === 'dark' ? 'text-white' : 'text-gray-600'} ${loading ? 'cursor-default opacity-50' : ''}`}
                             disabled={loading}
                         >Forgot Password?
                         </button>
                     </div>
                     <button
-                        className={`flex justify-center items-center gap-2 w-full bg-transparent border border-white ${mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
+                        className={`flex justify-center items-center gap-2 w-full bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-full py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'cursor-default opacity-50' : ''}`}
                         onClick={handleGoogleSignIn}
                         disabled={loading}
                     >
@@ -100,7 +100,7 @@ function SignIn({ setActiveRoute }: signInProps) {
                         <span className='select-none'>Continue with Google</span>
                     </button>
                     <div className='text-center w-full pt-2'>
-                        <div className={`text-sm ${mode === 'light' ? 'text-black' : 'text-white'}`}>Don't Have Account?&nbsp;
+                        <div className={`text-sm ${mode === 'dark' ? 'text-white' : 'text-black'}`}>Don't Have Account?&nbsp;
                             <button
                                 className={`font-semibold select-none text-[#4b5cff] hover:underline ${loading ? 'cursor-default opacity-50' : ''}`}
                                 onClick={() => setActiveRoute('signUp')}

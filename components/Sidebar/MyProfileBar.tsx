@@ -12,9 +12,10 @@ import Image from 'next/image'
 
 import Loader from '../Loader'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrUser, setMyProfileBar } from '@/redux/user/slice';
+import { setMyProfileBar } from '@/redux/user/slice';
+import { User } from '@prisma/client';
 
-function MyProfileBar() {
+function MyProfileBar({ user }: { user: User }) {
     const [name, setName] = useState<string>('')
     const [image, setImage] = useState<string>()
     const [email, setEmail] = useState<string>()
@@ -22,7 +23,7 @@ function MyProfileBar() {
     const [loading, setLoading] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const { user, myProfileBar, mode } = useAppSelector((state) => state.user)
+    const { myProfileBar, mode } = useAppSelector((state) => state.user)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -58,12 +59,18 @@ function MyProfileBar() {
         }
         await axios.put('/api/updateUser', data).then((data) => {
             const user = data.data.user
-            dispatch(setCurrUser(user))
         })
     }
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted)
+        return null
     return (
-        <div className={`absolute top-0 md:left-16 left-0 md:w-80 w-full h-full z-30 transition-all duration-300 ease-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-2 text-white'} ${myProfileBar ? 'translate-x-0 border-r border-light-1' : '-translate-x-full'}`}>
-            <div className={`flex items-center gap-4 px-2 h-16 ${mode && mode === 'light' ? 'bg-light-2' : 'bg-dark-1 text-white'}`}>
+        <div className={`absolute top-0 md:left-16 left-0 md:w-80 w-full h-full z-30 transition-all duration-300 ease-out ${mode === 'dark' ? 'bg-dark-2 text-white' : 'bg-light-1'} ${myProfileBar ? 'translate-x-0 border-r border-light-1' : '-translate-x-full'}`}>
+            <div className={`flex items-center gap-4 px-2 h-16 ${mode === 'dark' ? 'bg-dark-1 text-white' : 'bg-light-2'}`}>
                 <button className='hover:bg-b-light1 hover:bg-opacity-30 p-2 rounded-full' onClick={() => dispatch(setMyProfileBar(false))}>
                     <BiArrowBack size={24} />
                 </button>
@@ -97,7 +104,7 @@ function MyProfileBar() {
                                 ref={inputRef}
                                 contentEditable={false}
 
-                                className={`${mode && mode === 'light' ? 'bg-light-1' : 'bg-transparent'} py-2 w-full transition-colors duration-300 ease-in-out focus:outline-none border-b ${disabled ? 'border-black cursor-default' : 'border-b-light1'}`}
+                                className={`${mode === 'dark' ? 'bg-transparent' : 'bg-light-1'} py-2 w-full transition-colors duration-300 ease-in-out focus:outline-none border-b ${disabled ? 'border-black cursor-default' : 'border-b-light1'}`}
                                 onChange={(e) => !disabled && setName(e.target.value)}
                             />}
                             <button className='text-[#6d94c6]' onClick={handleClick} >

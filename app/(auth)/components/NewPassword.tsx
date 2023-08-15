@@ -32,7 +32,7 @@ const NewPassword = ({ setActiveRoute, email }: NewPasswordProps) => {
                 setActiveRoute("signIn")
             }).catch(() => toast.error("Unable to reset password")).finally(() => setIsLoading(false))
         }
-        else{
+        else {
             toast.error("Passwords does not match")
             setIsLoading(false)
         }
@@ -41,7 +41,7 @@ const NewPassword = ({ setActiveRoute, email }: NewPasswordProps) => {
     return (
         <>
             <p className='pb-2.5'>Create a New Password to continue on Talks Messenger</p>
-            <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
+            <div className={`flex flex-col items-center rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'bg-dark-1' : 'bg-light-1'}`}>
                 <h1 className='font-semibold text-2xl py-2'>Reset Password</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                     <Input
@@ -67,16 +67,16 @@ const NewPassword = ({ setActiveRoute, email }: NewPasswordProps) => {
                     <div className='flex justify-end items-center gap-4'>
                         <button
                             onClick={() => setActiveRoute('signIn')}
-                            className={`w-full bg-transparent border border-white ${mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'opacity-50 cursor-default' : ''}`}
+                            className={`w-full bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'opacity-50 cursor-default' : ''}`}
                             disabled={loading}
                         >
                             Back to Login</button>
                         <button
                             type='submit'
-                            className={`w-full bg-transparent border border-white ${mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'opacity-50 cursor-default' : ''}`}
+                            className={`w-full bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c] ${loading ? 'opacity-50 cursor-default' : ''}`}
                             disabled={loading}
                         >
-                            {loading?'Resetting...':'Reset'}</button>
+                            {loading ? 'Resetting...' : 'Reset'}</button>
                     </div>
 
                 </form>

@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Avatar from 'react-avatar'
 import { useParams, usePathname } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsChatText } from 'react-icons/bs'
 import { FaUserFriends } from 'react-icons/fa'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
@@ -11,8 +11,9 @@ import Image from 'next/image'
 import MyProfileBar from './MyProfileBar'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setMyProfileBar, setUserMode } from '@/redux/user/slice'
+import { User } from '@prisma/client'
 
-const BottomBarMobile = () => {
+const BottomBarMobile = ({ user }: { user: User }) => {
   const path = usePathname()
   const { mode } = useAppSelector((state) => state.user)
   const sideBarItems = [
@@ -43,20 +44,27 @@ const BottomBarMobile = () => {
     }
   }, [dispatch])
   const params = useParams()
-  const { user, myProfileBar } = useAppSelector((state) => state.user)
+  const { myProfileBar } = useAppSelector((state) => state.user)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted)
+    return null
   return (
     <>
       <div className='block md:hidden'>
-        <MyProfileBar />
+        <MyProfileBar user={user} />
       </div>
-      <div className={`md:hidden fixed flex bottom-0 text-text-light-1 h-16 z-40 w-full transition-colors duration-300 ease-in-out ${mode === 'light' ? 'bg-light-1' : 'bg-dark-1 text-white'} ${params && params?.chatId ? 'hidden' : ''}`}>
+      <div className={`md:hidden fixed flex bottom-0 text-text-light-1 h-16 z-40 w-full transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'bg-dark-1 text-white' : 'bg-light-1'} ${params && params?.chatId ? 'hidden' : ''}`}>
         <div className='flex gap-6 items-center  justify-around w-full'>
           <div className={`hover:bg-b-light1 cursor-pointer rounded hover:bg-opacity-30 pt-1 px-1`}>
-            {mode === "light" ? <button onClick={() => toggleMode("dark")}>
-              <MdDarkMode size={28} />
+            {mode === "dark" ? <button onClick={() => toggleMode("light")}>
+              <MdLightMode size={28} />
             </button> :
-              <button onClick={() => toggleMode("light")}>
-                <MdLightMode size={28} />
+              <button onClick={() => toggleMode("dark")}>
+                <MdDarkMode size={28} />
               </button>}
           </div>
           {sideBarItems.map((item) => (

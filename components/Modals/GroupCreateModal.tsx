@@ -1,12 +1,14 @@
 import axios from 'axios'
 import React from 'react'
 import Select from 'react-select'
+import { IoMdClose } from 'react-icons/io'
 
 import Modal from './Modal'
-import { User } from '@prisma/client'
+import { Conversation, User } from '@prisma/client'
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import Input from '@/components/Input'
 import { useAppSelector } from '@/redux/hooks'
+import { toast } from 'react-hot-toast'
 
 interface InputProps {
     isOpen: boolean,
@@ -16,44 +18,54 @@ interface InputProps {
         name: string,
     }
     isUpdate: boolean
+    conversation?: Conversation & {
+        users: User[]
+    }
 }
-const GroupCreateModal: React.FC<InputProps> = ({ isOpen, onClose, allUsers, defaultValues, isUpdate }) => {
+const GroupCreateModal: React.FC<InputProps> = ({ conversation, isOpen, onClose, allUsers, defaultValues, isUpdate }) => {
 
-    const { currConversation } = useAppSelector((state) => state.conversation)
+    const { mode } = useAppSelector((state) => state.user)
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FieldValues>({
         defaultValues: defaultValues
     })
     const members = watch('members')
+
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         let allUsers: string[];
+        onClose()
+        if (!isUpdate && data.members.length < 2) {
+            toast.error("Atleast 3 members required")
+            return
+        }
         if (data.members && data.members.length > 0)
             allUsers = data.members.map((user: any) => user.label)
 
         if (isUpdate) {
-            await axios.post('/api/conversation', { ...data, isGroup: true, conversationId: currConversation?.id }).then(async () => {
-            if (currConversation && allUsers && allUsers.length > 0)
-                await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: currConversation?.id })
+            await axios.put('/api/conversation', { ...data, isGroup: true, conversationId: conversation?.id }).then(async () => {
+                if (conversation && allUsers && allUsers.length > 0)
+                    await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: conversation?.id })
             })
-                
         } else {
             await axios.post('/api/conversation', { ...data, isGroup: true }).then(async (data) => {
                 const conversationData = data.data.conversation
-                
                 await axios.post('/api/message', { text: `created the group`, conversationId: conversationData.id, messageType: "user" });
                 await axios.post('/api/message', { text: `added ${allUsers.join(',')}`, messageType: "user", conversationId: conversationData.id })
-                
             })
         }
-        onClose()
         setValue('members', [])
     }
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
+            <div className='flex justify-between items-center border-b pb-1.5'>
+                <h1 className='font-bold text-xl  pb-2'>Create a group chat</h1>
+                <button onClick={onClose}>
+                    <IoMdClose size={24} />
+                </button>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <h1 className='font-bold text-xl border-b pb-2'>Create a group chat</h1>
                     <div className='py-3'>
                         <Input
                             id='name'
@@ -87,11 +99,8 @@ const GroupCreateModal: React.FC<InputProps> = ({ isOpen, onClose, allUsers, def
                             }}
                         />
                     </div>
-                    <div className='flex justify-end gap-4 pt-4 items-center'>
-                        <button className='px-2 py-1' onClick={onClose}>
-                            Cancel
-                        </button>
-                        <button type='submit' className='bg-b-light1 text-white px-2 py-1 rounded font-semibold'>
+                    <div className='flex justify-end pt-4'>
+                        <button type='submit' className={`${mode === 'dark' ? 'bg-white text-black' : 'bg-[#272a39] text-white'} px-2 py-1 rounded font-semibold`}>
                             Submit
                         </button>
                     </div>

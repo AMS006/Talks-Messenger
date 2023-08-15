@@ -1,15 +1,19 @@
 import DesktopSidebar from './DesktopSidebar'
 import BottomBarMobile from './BottomBarMobile'
 import getUserDetails from '@/actions/getUserDetail'
+import { redirect } from 'next/navigation'
 
 const Sidebar = async ({ children }: { children: React.ReactNode }) => {
 
-  const currUser = await getUserDetails()
+  const user = await getUserDetails()
+
+  if (!user)
+    redirect('/')
 
   return (
     <div className='h-full'>
-      {currUser && <DesktopSidebar  currUser={currUser} />}
-      <BottomBarMobile />
+      <DesktopSidebar user={user} />
+      <BottomBarMobile user={user} />
       <main className='md:pl-16 h-full'>
         {children}
       </main>

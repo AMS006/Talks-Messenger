@@ -36,7 +36,7 @@ const ForgotPassword = ({ setActiveRoute, generateCode, setEmail }: forgotPasswo
     return (
         <>
             <p className='pb-2.5'>Enter your Email you Get Verification Code</p>
-            <div className={`flex flex-col items-center  rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
+            <div className={`flex flex-col items-center  rounded-lg py-4 lg:px-12 md:px-10 sm:px-8 px-4 sm:mx-0 mx-2 shadow-lg transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'bg-dark-1' : 'bg-light-1'}`}>
                 <h1 className='font-semibold text-2xl py-2'>Reset Password</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
@@ -52,13 +52,13 @@ const ForgotPassword = ({ setActiveRoute, generateCode, setEmail }: forgotPasswo
                     <div className='flex justify-end items-center gap-4 mt-2'>
                         <button
                             onClick={() => setActiveRoute('signIn')}
-                            className={`${loading ? 'opacity-50 cursor-default' : ''} w-full bg-transparent border border-white ${mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c]`}
+                            className={`${loading ? 'opacity-50 cursor-default' : ''} w-full bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c]`}
                             disabled={loading}
                         >
                             Back to Login</button>
                         <button
                             type='submit'
-                            className={`${loading ? 'opacity-50 cursor-default' : ''} w-full bg-transparent border border-white ${mode === 'light' ? 'text-black' : 'text-white'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c]`}
+                            className={`${loading ? 'opacity-50 cursor-default' : ''} w-full bg-transparent border border-white ${mode === 'dark' ? 'text-white' : 'text-black'} mt-4 rounded-lg py-2 font-semibold transition-colors duration-150 ease-in-out hover:bg-slate-300 hover:text-[#0d142c]`}
                             disabled={loading}
                         >
                             {!loading ? 'Submit' : 'Verifying...'}</button>

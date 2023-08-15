@@ -1,6 +1,6 @@
 'use client'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CldUploadButton } from 'next-cloudinary'
 import { useParams } from 'next/navigation'
 import { BsImageFill } from 'react-icons/bs'
@@ -16,7 +16,7 @@ const InputBox = () => {
         const data = {
             text,
             image: '',
-            conversationId: params &&  params.chatId || ""
+            conversationId: params && params.chatId || ""
         }
         setText('')
         await axios.post('/api/message', data)
@@ -30,25 +30,28 @@ const InputBox = () => {
         const data = {
             text: '',
             image: result.info.public_id,
-            conversationId: params &&  params.chatId || ""
+            conversationId: params && params.chatId || ""
         }
-
         await axios.post('/api/message', data)
     }
-    return (
-        <>
-        {mode && <div className={`flex gap-2 items-center transition-colors duration-300 ease-in-out md:p-4 px-2 py-4 ${mode === 'light' ? 'bg-light-2' : 'bg-dark-2'}`}>
-            <div>
-                <CldUploadButton
-                    options={{ maxFiles: 1 }}
-                    onUpload={handleUpload}
-                    uploadPreset="foafbmjm"
-                >
-                    <BsImageFill size={28} className={`transition-colors duration-300 ease-in-out ${mode === 'light' ? 'text-text-light-1' : 'text-white'}`} />
-                </CldUploadButton>
 
-            </div>
-            <div className={` transition-colors duration-300 ease-in-out relative w-full ${mode === 'light' ? 'bg-light-1' : 'bg-dark-1'}`}>
+    const [mount, setMount] = useState(false)
+
+    useEffect(() => {
+        setMount(true)
+    }, [])
+    if (!mount)
+        return null
+    return (
+        <div className={`flex gap-2 items-center transition-colors duration-300 ease-in-out md:p-4 px-2 py-4 ${mode === 'dark' ? 'bg-dark-2' : 'bg-light-2'}`}>
+            <CldUploadButton
+                options={{ maxFiles: 1 }}
+                onUpload={handleUpload}
+                uploadPreset="foafbmjm"
+            >
+                <BsImageFill size={28} className={`transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'text-white' : 'text-text-light-1'}`} />
+            </CldUploadButton>
+            <div className={`transition-colors duration-300 ease-in-out relative w-full ${mode === 'dark' ? 'bg-dark-1' : 'bg-light-1'}`}>
                 <input
                     type="text"
                     name="text"
@@ -57,16 +60,15 @@ const InputBox = () => {
                     onKeyDown={(e) => handleKeyDown(e.key)}
                     placeholder='Type a message'
                     onChange={(e) => setText(e.target.value)}
-                    className={`w-full bg-transparent p-2 rounded focus:outline-none ${mode && mode === 'light' ? 'text-black' : 'text-white'}`}
+                    className={`w-full bg-transparent p-2 rounded focus:outline-none ${mode === 'dark' ? 'text-white' : 'text-black'}`}
                 />
             </div>
             <div>
                 <button onClick={handleSubmit}>
-                    <BiSend size={30} className={`transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'text-text-light-1' : 'text-white'}`} />
+                    <BiSend size={30} className={`transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'text-white' : 'text-text-light-1'}`} />
                 </button>
             </div>
-        </div>}
-        </>
+        </div>
     )
 }
 

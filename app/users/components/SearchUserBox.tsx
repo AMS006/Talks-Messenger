@@ -6,22 +6,20 @@ import { toast } from 'react-hot-toast'
 import { User } from '@prisma/client'
 import Avatar from 'react-avatar'
 
-import { useAppDispatch } from '@/redux/hooks'
-import { addConversations } from '@/redux/conversation/slice'
 import Loader from '@/components/Loader'
+import { useRouter } from 'next/navigation'
 
 const SearchUserBox = ({ user }: { user: User | undefined }) => {
 
     const [loading, setLoading] = useState(false);
-
-    const dispatch = useAppDispatch()
-
+    const router = useRouter()
     const handleAddConversation = async () => {
         if (user && user.id) {
             setLoading(true)
             await axios.post('/api/conversation', { id: user.id }).then((conversation) => {
-                dispatch(addConversations(conversation.data.conversation))
                 toast.success("Conversation Added")
+
+                router.push(`/chats/${conversation.data.conversation.id}`)
             }).finally(() => setLoading(false))
         }
     }

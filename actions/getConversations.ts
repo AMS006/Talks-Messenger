@@ -4,6 +4,8 @@ import getUserDetails from './getUserDetail'
 const getConversations = async () => {
     try {
         const currentUser = await getUserDetails()
+        if(!currentUser)
+            return []
         const conversations = await prisma.conversation.findMany({
             orderBy: {
                 lastMessageAt: "desc"
@@ -26,7 +28,7 @@ const getConversations = async () => {
             }
         })
         if(!conversations)
-            return null
+            return []
         return conversations
     } catch (error) {
         throw new Error("Invalid Request")

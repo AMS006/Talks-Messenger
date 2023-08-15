@@ -3,7 +3,7 @@ const getMessages = async (conversationId: string) => {
     try {
 
         if (!conversationId)
-            return null;
+            return [];
 
         const conversations = await prisma.message.findMany({
             where: { conversationId: conversationId },
@@ -11,12 +11,12 @@ const getMessages = async (conversationId: string) => {
                 sender: true,
             },
             orderBy: {
-                createdAt: "desc"
+                createdAt: "asc"
             }
         })
         return conversations
     } catch (error) {
-        throw new Error("Invalid Request")
+        return []
     }
 }
 export default getMessages

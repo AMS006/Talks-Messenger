@@ -22,10 +22,10 @@ export default function Home() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!localStorage.mode) {
-        localStorage.setItem("mode", "light")
-        dispatch(setUserMode("light"))
+      localStorage.setItem("mode", "light")
+      dispatch(setUserMode("light"))
     } else {
-        dispatch(setUserMode(localStorage.getItem("mode") || ""))
+      dispatch(setUserMode(localStorage.getItem("mode") || ""))
     }
   }, [dispatch])
 
@@ -44,16 +44,16 @@ export default function Home() {
     if (session?.status === 'authenticated') {
       router.push('/chats')
     }
-  }, [session.status, session.data,router])
+  }, [session.status, session.data, router])
   return (
     <>
-      <div className={`flex min-h-full flex-col  justify-center items-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 ease-in-out ${mode && mode === 'light' ? 'bg-light-2 text-black' : 'bg-dark-2 text-white'}`}>
+      <div className={`flex min-h-full flex-col  justify-center items-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 ease-in-out ${mode && mode === 'dark' ? 'bg-dark-2 text-white' : 'bg-light-2 text-black'}`}>
         <div className="absolute top-4 right-4 ">
-          {mode === "light" ? <button onClick={() => toggleMode("dark")}>
-            <MdDarkMode size={28} />
+          {mode === "dark" ? <button onClick={() => toggleMode("light")}>
+            <MdLightMode size={28} />
           </button> :
-            <button onClick={() => toggleMode("light")}>
-              <MdLightMode size={28} />
+            <button onClick={() => toggleMode("dark")}>
+              <MdDarkMode size={28} />
             </button>}
         </div>
         <div className="flex flex-col justify-center items-center gap-1 py-2">

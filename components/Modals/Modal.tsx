@@ -63,8 +63,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                   transform 
                   overflow-hidden 
                   rounded-lg 
-                  ${mode === 'light' ? 'bg-light-1 text-black' :
-                    'bg-dark-1 text-white'}
+                  ${mode === 'dark' ?
+                    'bg-dark-1 text-white' : 'bg-light-1 text-black'}
                   
                   px-4 
                   pb-4

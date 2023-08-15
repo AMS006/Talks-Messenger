@@ -9,7 +9,71 @@ export async function POST(req: Request) {
         const currentUser = await getUserDetails()
         const body = await req.json()
 
-        // Group leave request
+        // New Group Creation Error If members are less than 2
+        if (body.isGroup && (!body.members || body.members.length < 2)) {
+            return NextResponse.json({ message: "Invalid Request" })
+        }
+
+        // Create new Group Conversation
+        if (body.isGroup) {
+            const conversation = await prisma.conversation.create({
+                data: {
+                    name: body.name,
+                    isGroup: true,
+                    users: {
+                        connect: [
+                            ...body.members.map((member: { value: string }) => (
+                                { id: member.value }
+                            )),
+                            {
+                                id: currentUser?.id
+                            }
+                        ]
+                    }
+                },
+                include: {
+                    users: true
+                }
+            })
+            conversation.users.map((user) => {
+                if (user.email)
+                    pusherServer.trigger(user.email, 'conversation:new', conversation)
+            })
+            return NextResponse.json({ conversation })
+        }
+
+        // Create a new conversation between two users
+        const conversation = await prisma.conversation.create({
+            data: {
+                users: {
+                    connect: [
+                        { id: currentUser?.id },
+                        { id: body.id }
+                    ]
+                }
+            },
+            include: {
+                users: true
+            }
+        })
+        conversation.users.map((user) => {
+            if (user.email)
+                pusherServer.trigger(user.email, 'conversation:new', conversation)
+        })
+        return NextResponse.json({ conversation })
+
+    } catch (error) {
+        throw new Error("Internal Servel Error")
+    }
+}
+
+export async function PUT(req: Request) {
+    try {
+        const body = await req.json()
+        const currentUser = await getUserDetails()
+
+
+        // Request to leave the Group
         if (body?.leaveGroup) {
             const conversation = await prisma.conversation.update({
                 where: { id: body.conversationId },
@@ -32,7 +96,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ conversation })
         }
 
-        // Adding Members in Group 
+        // Updating Group Conversation
         if (body.conversationId) {
             const currConversationDetail = await prisma.conversation.findUnique({
                 where: { id: body.conversationId },
@@ -98,95 +162,10 @@ export async function POST(req: Request) {
                     })
                     return NextResponse.json({ conversation })
                 }
-
             }
         }
-
-        // New Group Creation Error If members are less than 2
-        if (body.isGroup && (!body.members || body.members.length < 2)) {
-            return NextResponse.json({ message: "Invalid Request" })
-        }
-
-        // Create new Group Conversation
-        if (body.isGroup) {
-            const conversation = await prisma.conversation.create({
-                data: {
-                    name: body.name,
-                    isGroup: true,
-                    users: {
-                        connect: [
-                            ...body.members.map((member: { value: string }) => (
-                                { id: member.value }
-                            )),
-                            {
-                                id: currentUser?.id
-                            }
-                        ]
-                    }
-                },
-                include: {
-                    users: true
-                }
-            })
-            conversation.users.map((user) => {
-                if (user.email)
-                    pusherServer.trigger(user.email, 'conversation:new', conversation)
-            })
-            return NextResponse.json({ conversation })
-        }
-
-        // Create a new conversation between two users
-        const conversation = await prisma.conversation.create({
-            data: {
-                users: {
-                    connect: [
-                        { id: currentUser?.id },
-                        { id: body.id }
-                    ]
-                }
-            },
-            include: {
-                users: true
-            }
-        })
-        conversation.users.map((user) => {
-            if (user.email)
-                pusherServer.trigger(user.email, 'conversation:new', conversation)
-        })
-        return NextResponse.json({ conversation })
 
     } catch (error) {
-        throw new Error("Invalid Request")
-    }
-}
-
-// Get all Conversation of user
-export async function GET() {
-    try {
-        const currentUser = await getUserDetails()
-        const conversations = await prisma.conversation.findMany({
-            orderBy: {
-                lastMessageAt: "desc"
-            },
-            where: {
-                userIds: {
-                    has: currentUser?.id
-                }
-            },
-            include: {
-                users: true,
-                messages: {
-                    orderBy: {
-                        createdAt: "desc"
-                    },
-                    include: {
-                        sender: true
-                    }
-                }
-            }
-        })
-        return NextResponse.json({ conversations })
-    } catch (error) {
-        throw new Error("Invalid Request")
+        throw new Error("Internal Servel Error")
     }
 }
