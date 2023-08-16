@@ -13,6 +13,7 @@ import logo from '@/public/logo.png'
 import { useAppSelector } from '@/redux/hooks'
 import { ConversationType } from '@/types'
 import { pusherClient } from '@/libs/pusher'
+import Link from 'next/link'
 
 interface InputProps {
   conversations: ConversationType[]
@@ -148,7 +149,7 @@ const Users: React.FC<InputProps> = ({ conversations, user }) => {
   return (
     <>
       {conversations && allUsers && allUsers.length > 0 && <GroupCreateModal isOpen={groupModalOpen} onClose={() => setGroupModalOpen(false)} allUsers={allUsers} defaultValues={defaultValues} isUpdate={false} />}
-      <aside className={`md:fixed md:w-80 md:left-16 md:pb-0 md:border-r pb-16 md:block h-full ${mode === 'dark' ? '' : 'border-b-light1'} ${params && params?.chatId ? 'hidden' : 'block'}`}>
+      <aside className={`md:fixed md:w-80 md:left-16  md:border-r pb-16 md:block h-full ${mode === 'dark' ? '' : 'border-b-light1'} ${params && params?.chatId ? 'hidden' : 'block'}`}>
         <div className={`flex justify-between items-center md:px-4 px-2 h-16 sticky top-0 z-10 shadow transition-colors duration-300 ease-in-out ${mode === 'dark' ? 'bg-dark-1 text-white' : 'bg-light-1'}`}>
           <div className='flex items-center gap-1'>
             <Image src={logo} height={32} width={32} alt='logo' className='md:hidden rounded' />
@@ -162,8 +163,9 @@ const Users: React.FC<InputProps> = ({ conversations, user }) => {
           {sortedConversations.length > 0 ? sortedConversations.map((conversation, index) => (
             <UserBox conversation={conversation} user={user} key={index} />
           )) :
-            <div className='flex justify-center items-center py-6'>
+            <div className={`flex flex-col justify-center items-center gap-2.5 py-6 ${mode === 'dark'?'text-white':'text-black'}`}>
               <p>No Conversations Found</p>
+              <p><Link href='/users' className='hover:underline text-blue-500'>Click Here</Link> to start new conversation</p>
             </div>}
         </div>
       </aside>
